@@ -1,7 +1,4 @@
-
-
 <!-- .slide: data-background-image="./title.png" data-background-opacity="0.3" -->
-
 
 ## The Alchemy of Code
 
@@ -25,7 +22,8 @@ Note:
 - underlying principles are more important
 - explain the most common and important principles in enough depth to apply them
 - this isn't an exhaustive list
-- not talk about security principles or testing techniques
+- not a talk about security principles or testing techniques
+- I won't go into the obvious ones (DRY, KISS)
 - focus on software development and OOP
 
 ---
@@ -233,12 +231,12 @@ class Group {
 
 Note:
 
-- object orientation divides a program into objects
-- objects expose data and behavior through defined interfaces
-  - we call them "members"
-  - the data is also called "fields", "attributes" or "properties"
-  - and the behavior or functions are now called "methods"
-- the difference to procedural programming is that data and behavior are no longer separate -> they are bundled in objects
+- Object orientation divides a program into objects
+- Objects expose data and behavior through defined interfaces
+  - We call them "members"
+  - The data is also called "fields", "attributes" or "properties"
+  - And the behavior or functions are now called "methods"
+- The difference to procedural programming is that data and behavior are no longer separate -> they are bundled in objects
 
 ---
 
@@ -248,9 +246,9 @@ Note:
 
 Note:
 
-- every skyscraper starts with a solid base
-- in software, we often build on sand and wonder why the roof leaks.
-- in Germany we say: "Kranplätze müssen verdichtet sein!"
+- Every skyscraper starts with a solid base
+- In software, we often build on sand and wonder why the roof leaks.
+- In Germany we say: "Kranplätze müssen verdichtet sein!"
 - So, when the object oriented paradigm emerged, people came up with features or "pillars" that a system should follow in order to call itself "object oriented".
 - This is less about <strong>you</strong> than it is about the <strong>system</strong>.
 - However, it's still important to understand how the system works in order for you to know how you should use it.
@@ -271,25 +269,243 @@ I'm sure you've heard of these before, but what do they actually mean?
 
 --
 
+<!-- .slide: data-background-image="https://static.vecteezy.com/system/resources/previews/056/884/821/non_2x/3d-ancient-greek-temple-with-columns-on-transparent-background-free-png.png" data-background-opacity="0.1" -->
+
 ### Encapsulation
 
-<!-- .slide: data-background-image="https://static.vecteezy.com/system/resources/previews/056/884/821/non_2x/3d-ancient-greek-temple-with-columns-on-transparent-background-free-png.png" data-background-opacity="0.1" -->
+#### Information hiding
+
+⬆️ Cohesion ⬆️
+
+⬇️ Coupling ⬇️
 
 Note:
 
-Encapsulation can refer to different things, but most often we mean "Information hiding"
+- "Encapsulation" or sometimes "Information Hiding"
+- Several related concepts with fuzzy borders
+- Idea:
+  - Bundling related members in one unit (object),
+    - Benefit of high cohesion: Things that belong together are in the same place
+  - Restricting access to members through defined interfaces
+    - Benefit of low coupling: Fewer interdependencies between modules
+    - Theoretically unable to reach incorrect or inconsistent states at runtime
 
 --
 
 ### Abstraction
 
+abstrahere: to remove
+
+```typescript
+abstract class Animal {
+  abstract speak(): string;
+}
+```
+
+Note:
+
+- The term abstraction comes from latin and apparently means "to draw away"
+- It's typically used as viewing a concept or idea detached from specific instances or physical objects
+- The real world is complex, but not all of this complexity is relevant to the goal of the software.
+- Abstraction simplifies complexity by modeling only the essentials.
+- Unnecessary details are disregarded.
+- Thinking back to "declarative" and "imperative" paradigms:
+  - Abstraction separates what something does from how it is implemented
+  - A good example of that is an abstract class or an interface
+
 --
 
 ### Inheritance
 
+hierarchical reuse of code
+
+Note:
+
+- Hierarchical tree-structures that enable implementation sharing / code reuse
+- Can be implemented via prototypes or classes
+- Prototypes
+  - Inheritance on the level of objects
+  - An object can be linked to another object, called parent or prototype
+  - Up to the "base" object, which has no prototype
+    <!-- - Every object -->
+      <!-- - Inherits the properties of it's prototype -->
+      <!-- - Can define additional properties -->
+    <!-- - Optional -->
+      <!-- - Multiple inheritance allows having multiple prototypes -->
+- Classes
+  - Most common approach
+  - Inheritance on the level of classes
+  - Classes are templates / blueprints
+  - Class instance = object
+  - I'm sure you know the rest of it
+    <!-- - Class member = attribute or method -->
+    <!-- - (sub / child) classes can inherit / be derived from) other (super / parent / base) classes -->
+    <!-- - An instance of a subclass is also a member of every super-class, sharing the same attributes and methods -->
+    <!-- - Optional -->
+      <!-- - Subclass members can override super-class members -->
+      <!-- - Static members are class-specific instead of instance-specific -->
+      <!-- - Multiple inheritance allows having multiple direct super-classes -->
+      <!-- - Additional constructs like mixins, traits or interfaces -->
+- What I want you to take away is that classes are not strictly necessary for inheritance, as long as hierarchical reuse of code is possible in some way
+
 --
 
 ### Polymorphism
+
+subtype\
+ad hoc\
+parametric\
+coercion
+
+Note:
+
+- Polymorphism can mean many things
+- People often get them confused
+  - I often participate in our TNG interviews
+  - Barely anyone really understands this
+- In the context of OOP, we typically mean "subtype polymorphism"
+
+--
+
+### Subtype Polymorphism
+
+```typescript
+abstract class Animal {
+  abstract speak(): string
+}
+
+class Dog extends Animal {
+  override speak(): string {
+    return "Woof!";
+  }
+}
+
+class Cat extends Animal {
+  ...
+```
+
+Note:
+
+- AKA "inclusion polymorphism" or "method overriding"
+- Using inheritance OR interfaces
+- A reference to a super-type can refer to any derived type
+- A subtype can provide a specific implementation for a method defined by its super-type
+- Control flow is determined at runtime (AKA dynamic / late binding)
+  - Based on the actual type of the object whose member is called (the type of "this" / "self")
+  - The parameter and return types don't matter!
+- Remember to apply the Liskov Substitution Principle (LSP)! (presented later)
+
+--
+
+### Other Polymorphism
+
+#### Ad hoc (Overloading)
+
+```typescript
+class Dog {
+  speak(): string;
+  speak(times: number): string;
+  speak(times?: number): string {
+    if (times) return "Woof! ".repeat(times).trim();
+    return "Woof!";
+  }
+}
+```
+
+#### Parametric (Generics)
+
+```typescript
+interface Factory<T> {
+    T create()
+}
+```
+
+#### Coercion (Weak Typing)
+
+```javascript
+"a" + 1; // "a1"
+```
+
+Note:
+
+- Ad hoc polymorphism
+  - A function can have multiple implementations with different signatures, specifically parameter types
+  - AKA function or operator overloading
+  - Control flow is typically determined at compile time (AKA static / early binding)
+    - There are exceptions (interpreted languages, Julia, Common Lisp) where control flow is determined at runtime, based on the actual parameter types
+  - TypeScript is forced to implement this in a weird way, because here you can overload signatures, but all of them share a single implementation
+    - Other languages like Java allow you to have different signatures for the same method name
+- Parametric polymorphism
+  - Declarations using "generic" instead of "concrete" types
+  - Abstract symbols that can substitute for any type
+  - Generic programming (AKA "templates" in C++)
+  - Typically checked at compile time
+  - Different approaches, depending on the language
+    - Monomorphization - compilation generates type-specific code (e.g. Rust, C++, C# at runtime for value types)
+    - Type erasure - compilation discards type information or the runtime uses dynamic typing (e.g. Java using "Boxing" for value types, C# for reference types, TypeScript, Python)
+- Coercion polymorphism
+  - This happens when a language automatically converts a value from one type to another to match a function's requirements
+  - AKA implicit type conversion or "weak" typing
+  - Other example: Passing an int to a function expecting a float
+
+---
+
+## SOLID Principles
+
+- Single Responsibility Principle (SRP)
+- Open/Closed Principle (OCP)
+- Liskov Substitution Principle (LSP)
+- Interface Segregation Principle (ISP)
+- Dependency Inversion Principle (DIP)
+
+---
+
+## Design Principles
+
+- Inversion of Control (IoC)
+- Separation of Concerns (SoC)
+- Law of Demeter (LoD) ?
+  - principle of least knowledge
+  - don't talk to strangers
+- Command-Query Separation (CQS)
+- Minimize Cyclomatic Complexity
+  - less branching
+
+---
+
+## Noteworthy Mentions
+
+--
+
+## Testing
+
+- "Testen Nicht Glauben" (TNG obviously)
+- Shift Left: Early testing and security
+- F.I.R.S.T. principles
+  - Fast
+  - Independent
+  - Repeatable (deterministic)
+  - Self-Validating (obvious success or failure)
+  - Timely (e.g. Test Driven Development)
+
+--
+
+## Be Lazy
+
+- You Aren't Gonna Need It (YAGNI)
+- Don't reinvent the wheel
+- Keep It Simple, Stupid (KISS)
+- Make the change easy, then make the easy change
+
+--
+
+### Coding
+
+- Principle of Least Astonishment (POLA)
+- Don't Repeat Yourself (DRY)
+- Write self-documenting code
+- Boy Scout Rule: Leave the code cleaner
+- Atomic changes (commits / pull requests)
 
 ---
 
