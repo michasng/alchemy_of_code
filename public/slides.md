@@ -458,6 +458,368 @@ Note:
 - Interface Segregation Principle (ISP)
 - Dependency Inversion Principle (DIP)
 
+Note:
+
+- Now we'll talk about actionable principles for developers
+- You can actually apply these to make your code more understandable, flexible and maintainable
+- SOLID principles relate specifically to OOP and functional programming
+- Introduced by Robert C. Martin ("Uncle Bob")
+  - This is the author of "Clean Code"
+  - And one of the authors of the Agile Manifesto
+
+--
+
+#### Violation of ?
+
+```typescript
+class UserService {
+  constructor(private userRepository: Repository<User>) {}
+
+  saveUser(user: User): void {
+    this.userRepository.save(user);
+    this.logInfo(`User ${user.name} stored`);
+  }
+
+  private logInfo(message: string): void {
+    const time = new Date().toISOString();
+    const origin = UserService.name;
+    console.info(`${time} in ${origin}: ${message}`);
+  }
+}
+```
+
+Note:
+
+- Question: What is the violation?
+- This service does too many things
+  - It calls some `Repository`, so far so good
+  - But it also decides exactly how the log messages are formatted
+- You can imagine how this is going to lead to duplicate and inconsistent code over time
+
+--
+
+### Single Responsibility Principle
+
+> There should never be more than\
+> one reason for a class to change.
+
+Note:
+
+- There should never be more than one reason for a class to change
+- I.e. every class should have only one responsibility
+- The OOP implementation of "Separation of Concerns (SoC)"
+- How?
+  - Write small classes with only one job
+- Why?
+  - Makes your classes easy to think about and change
+  - Also makes them easy to unit-test in isolation
+
+--
+
+#### Application
+
+of the Single Responsibility Principle
+
+```typescript
+class UserService {
+  constructor(
+    private logger: Logger,
+    private userRepository: Repository<User>,
+  ) {}
+
+  saveUser(user: User): void {
+    this.userRepository.save(user);
+    this.logger.info(`User ${user.name} stored`);
+  }
+}
+```
+
+Note:
+
+- A `Logger` class has been extracted
+- Now the service only has one responsibility, which is to manage users
+
+--
+
+#### Violation of ?
+
+```typescript
+class AreaCalculator {
+  calculate(shapes: Array<Rectangle | Circle>): number {
+    return shapes.reduce((sum, shape) => {
+      if (shape instanceof Rectangle) {
+        return sum + shape.width * shape.height;
+      } else if (shape instanceof Circle) {
+        return sum + Math.PI * shape.radius ** 2;
+      }
+      throw new Error("Unknown shape");
+    }, 0);
+  }
+}
+```
+
+Note:
+
+- Question: What is the violation?
+
+--
+
+### Open/Closed Principle
+
+> Software entities should be\
+> open for extension,\
+> but closed for modification.
+
+Note:
+
+- Software entities should be open for extension, but closed for modification
+- What's a software entity? → classes, modules, functions
+- Adding features without modifying existing code
+- How?
+  - Apply the Single Responsibility Principle
+  - Use composition ("has a" relationships)
+  - Avoid "instance of" code-smell
+- Why?
+  - Makes code flexible and re-usable
+  - Reduces the risk of breaking things from modification
+  - Moves errors from runtime to compile time
+
+--
+
+#### Application
+
+of the Open/Closed Principle
+
+```typescript
+interface Shape {
+  area(): number;
+}
+
+class AreaCalculator {
+  calculate(shapes: Shape[]): number {
+    return shapes.reduce((sum, shape) => sum + shape.area(), 0);
+  }
+}
+```
+
+Note:
+- This can fail at compile time, but it shouldn't fail at runtime
+
+--
+
+#### Violation of ?
+
+```typescript
+class List {
+  private items: number[] = [];
+
+  add(item: number): void {
+    this.items.push(item);
+  }
+}
+
+class ReadOnlyList extends List {
+  add(_item: number): void {
+    throw new Error("Cannot mutate a read-only list");
+  }
+}
+```
+
+```typescript
+function doSomethingHarmless(list: List) {
+  list.add(1);
+}
+```
+
+Note:
+
+- Question: What is the violation?
+- `ReadOnlyList` violates the contract of the `List` base class
+- This example is inspired by real code from the standard libraries of C# and Dart
+
+--
+
+### Liskov Substitution Principle
+
+> Objects of a superclass\
+> should be replaceable\
+> with objects of its subclasses\
+> without breaking the application.
+
+Note:
+
+- Objects of a superclass should be replaceable with objects of its subclasses without breaking the application.
+- I.e. any derived type can "substitute" their base types and the program is still correct.
+- A subclass should never break the constract of the superclass
+- How?
+  - Use composition ("has a") instead of inheritance ("is a")
+  - Avoid "Unsupported exception" code-smell
+  - Apply the Interface Segregation Principle (next up)
+- Why?
+  - Makes contracts reliable
+  - Enables subtype polymorphism
+  - Avoid runtime issues
+
+--
+
+### Interface Segregation Principle
+
+> Clients should not be forced to depend on methods they do not use.
+
+Note:
+
+- Clients should not be forced to depend upon interface methods that they do not use
+- Many specific interfaces are better than one general-purpose interface
+- How?
+  - Split large interfaces
+- Why?
+  - Decoupling: Fewer dependencies between modules
+    - Gives you less to think about
+    - Simplifies mocking in unit-tests
+
+--
+
+#### Application
+
+of the Interface Segregation Principle
+
+```typescript
+interface ReadableList {
+    get items(): readonly number[]
+}
+
+interface MutableList {
+    add(item: number): void
+}
+
+class List implements ReadableList, MutableList { ... }
+
+class ReadOnlyList implements ReadableList { ... }
+```
+
+```typescript
+function doSomethingHarmless(list: MutableList) {
+  list.add(1);
+}
+```
+
+Note:
+
+- Firstly, notice that this is not using class inheritance
+- Instead, it uses small, independent interfaces
+- That by itself has fixed the issue from before
+  - Now I can add to a list and the compiler ensures that it's not read-only
+- But keep in mind what the principle actually says
+  - "Clients should not be forced to depend on methods they do not use."
+- `doSomethingHarmless` is the client
+  - This client never reads the list
+  - So the final step to apply this principle is for the client to depend only on mutable lists
+
+--
+
+#### Violation of ?
+
+```typescript
+// low-level module
+class InMemoryRepository<T> {
+  save(data: T): void;
+}
+
+// high-level module
+class UserService {
+  constructor(private storage: InMemoryRepository<User>) {}
+}
+```
+
+Note:
+
+- Question: What is the violation?
+- A high-level module depends on a low-level module
+  - Both are concretions
+
+--
+
+<!-- .slide: data-transition="slide-in fade-out" -->
+
+### Dependency Inversion Principle
+
+> High-level modules shouldn't\
+> depend on low-level modules.\
+> Both should depend on abstractions.
+
+![](DIP-violation.png)
+
+Note:
+
+- High-level modules shouldn't depend on low-level modules; Both should depend on abstractions
+- So instead of doing this ...
+
+--
+
+<!-- .slide: data-transition="fade-in slide-out" -->
+
+### Dependency Inversion Principle
+
+> High-level modules shouldn't\
+> depend on low-level modules.\
+> Both should depend on abstractions.
+
+![](DIP-solution.png)
+
+Note:
+
+- ... we should do this
+- Where both modules depend on abstractions, not on each other
+- How?
+  - Depend on abstractions, not on concretions
+  - We have different kinds of arrows here
+    - The high-level module "uses" the abstraction
+    - And the low-level module "realizes" the abstraction; It is a concrete implementation of the abstraction
+- Why?
+  - Loose coupling
+  - Flexibility: Implementations are interchangeable
+  - Makes code more declarative
+    - The high level module is only concerned about "what" happens, without needing to care about "how" it's implemented
+  - That's also a clearer Separation of Concerns
+- Careful with the word "inversion" in this context
+  - What we invert is the dependency hierarchy
+    - Before, we had an arrow pointing down
+    - Now we have two arrows pointing up
+  - This is not the same "inversion" as in the "Inversion of Control" principle
+    - We will talk about this later
+
+--
+
+#### Application
+
+of the Dependency Inversion Principle
+
+```typescript
+// abstraction
+interface Repository<T> {
+  save(data: T): void;
+}
+
+// low-level module
+class InMemoryRepository<T> implements Repository<T> {
+  save(data: T): void;
+}
+
+// high-level module
+class UserService {
+  constructor(private repository: Repository<User>) {}
+}
+```
+
+Note:
+
+- We introduce a `Repository` abstraction
+- Both of our concrete classes depend on the abstraction, but in different ways
+  - The high-level service uses the abstraction
+  - The low-level `InMemoryRepository` realizes the abstraction
+    - It is one among many possible `Repository` implementations
+- These two classes are now decoupled
+
 ---
 
 ## Design Principles
