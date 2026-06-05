@@ -876,7 +876,3 @@ Note:
 - _Clean Code_ - Robert C. Martin
 - _Design Patterns_ - Erich Gamma et al.
 - _Refactoring_ - Martin Fowler
-
-```
-
-```
