@@ -603,6 +603,7 @@ class AreaCalculator {
 ```
 
 Note:
+
 - This can fail at compile time, but it shouldn't fail at runtime
 
 --
@@ -826,16 +827,55 @@ Note:
 
 - Inversion of Control (IoC)
 - Separation of Concerns (SoC)
-- Law of Demeter (LoD) ?
-  - principle of least knowledge
-  - don't talk to strangers
+- Composition over Inheritance
+- Law of Demeter (LoD)
 - Command-Query Separation (CQS)
 - Minimize Cyclomatic Complexity
-  - less branching
+
+--
+
+### Inversion of Control
+
+Note:
+
+--
+
+### Separation of Concerns
+
+Note:
+
+--
+
+### Composition over Inheritance
+
+Note:
+
+--
+
+### Law of Demeter
+
+Note:
+
+- principle of least knowledge
+- don't talk to strangers
+
+--
+
+### Command-Query Separation
+
+Note:
+
+--
+
+### Minimize Cyclomatic Complexity
+
+Note:
+
+- less branching
 
 ---
 
-## Noteworthy Mentions
+## Honorary Mentions
 
 --
 
@@ -856,18 +896,19 @@ Note:
 
 - You Aren't Gonna Need It (YAGNI)
 - Don't reinvent the wheel
-- Keep It Simple, Stupid (KISS)
 - Make the change easy, then make the easy change
+- Keep It Simple, Stupid (KISS)
+- Don't Repeat Yourself (DRY)
 
 --
 
 ### Coding
 
+- Make atomic changes
 - Principle of Least Astonishment (POLA)
-- Don't Repeat Yourself (DRY)
 - Write self-documenting code
+- Avoid nesting
 - Boy Scout Rule: Leave the code cleaner
-- Atomic changes (commits / pull requests)
 
 ---
 
