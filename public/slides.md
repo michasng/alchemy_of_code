@@ -1587,9 +1587,11 @@ Note:
 
 ---
 
-## Sources
+## Slides
 
-- _Clean Code_ - Robert C. Martin
-- _Design Patterns_ - Erich Gamma et al.
-- _Refactoring_ - Martin Fowler
-- _A Philosophy of Software Design_ - John Ousterhout
+https://github.com/michasng/alchemy_of_code
+
+Note:
+- That's it.
+- I hope you found this talk interesting
+- You can find the slides right here
