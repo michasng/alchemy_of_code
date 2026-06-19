@@ -1274,9 +1274,176 @@ Note:
 
 --
 
-### Command-Query Separation
+#### Violation of ?
+
+```typescript
+class PricingService {
+  private usedPromoCodes = new Set<string>();
+
+  calculatePrice(cart: Cart, promoCode?: string): number {
+    const total = Math.sumPrecise(cart.itemPrices);
+
+    if (promoCode && !this.usedPromoCodes.has(promoCode)) {
+      this.usedPromoCodes.add(promoCode);
+      return total / 2;
+    }
+
+    return total;
+  }
+}
+```
 
 Note:
+
+- `calculatePrice()` started as a pure query — it just calculated a price
+- New requirement arrived:
+  - promo codes to get a discount
+  - promo codes should only be usable once
+- The developer modified the existing query
+- Another obvious requirement:
+  - Users want to preview the price in the UI
+- Bug: Users see a discount, but are charged with the full price
+  - Why?
+  - Every call to preview the price in the UI silently consumes the promo code
+- The cart summary, the order confirmation and the receipt all call this — the first one wins, the rest get full price
+- No concurrent access needed to trigger this bug — a single page render is enough
+
+--
+
+### Command-Query Separation
+
+> Every method should either be\
+> a **command** that performs an action,\
+> or a **query** that returns data,\
+> but not both.
+
+Note:
+
+- Coined by Bertrand Meyer in "Object-Oriented Software Construction" (1988)
+- **Command**: changes state, returns `void`
+- **Query**: returns data, has no side-effects — safe to call multiple times
+- In other words, asking a question should not change the answer.
+- How?
+  - Name commands as actions, mutate state and don't return a value
+  - Name queries as questions, return a value and don't mutate state
+- Why?
+  - Readability: the signature tells you what kind of operation it is
+  - Predictability: you always know whether a call is safe to repeat
+  - Testability: queries are pure and easy to assert; commands can be verified by their effect
+- Why not?
+  - Meyer himself acknowledged that pragmatic violations are sometimes justified
+  - CQS is a heuristic, not dogma
+  - `iterator.next()` where advancing and reading are inseparable by definition
+  - `stack.pop()` where removing and returning the top item must be atomic to prevent race conditions in asynchronous code
+  - In both cases:
+    - The side-effect is implied by the name
+    - The caller almost always also wants to perform the query,
+      so bundling them is practically useful and reduces verbosity / boilerplate
+    - The APIs are well established, so changing them would create frustration
+
+--
+
+#### Application
+
+of Command-Query Separation
+
+<!-- prettier-ignore -->
+```typescript
+class PricingService {
+  private usedPromoCodes = new Set<string>();
+
+  calculatePrice(cart: Cart, promoCode?: string): number {
+    const total = Math.sumPrecise(cart.itemPrices);
+    const hasDiscount = promoCode
+      && !this.usedPromoCodes.has(promoCode);
+    return hasDiscount ? total / 2 : total;
+  }
+
+  redeemPromoCode(promoCode: string): void {
+    this.usedPromoCodes.add(promoCode);
+  }
+}
+```
+
+Note:
+
+- `calculatePrice()` is a pure query again, the UI can call it many times
+- `redeemPromoCode()` is an explicit command, called exactly once at checkout
+- However, one could argue that these are different concerns in the first place
+
+--
+
+#### Better Application
+
+of Command-Query Separation + Single Responsibility
+
+```typescript
+class PromoCodeService {
+  private usedPromoCodes = new Set<string>();
+
+  isValid(promoCode: string): boolean {
+    return !this.usedPromoCodes.has(promoCode);
+  }
+
+  redeem(promoCode: string): void {
+    this.usedPromoCodes.add(promoCode);
+  }
+}
+```
+
+```typescript
+class PricingService {
+  calculatePrice(cart: Cart, discountRate: number = 0): number {
+    const total = Math.sumPrecise(cart.itemPrices);
+    return total * (1 - discountRate);
+  }
+}
+```
+
+Note:
+
+- So rather than adding features to the `PricingService`
+- Let's keep it focused on calculating the price
+- And have a new abstraction to manage promo codes
+- Different callers might compose these class in different ways
+  - The preview UI (query) checks promo code validity and calculates the price
+  - The checkout (command) checks validity, calculates the price and redeems the promo code when the purchase succeeds;
+    The checkout doesn't need to return a price, it only needs to indicate success
+
+--
+
+### CQS vs. CQRS
+
+**CQRS** (Command Query Responsibility Segregation) generalizes **CQS** to an architectural level
+
+```typescript
+// Write model — normalized, transaction-safe
+interface PlaceOrderCommand {
+  userId: string;
+  items: { productId: string; quantity: number }[];
+}
+
+// Read model — denormalized, optimized for display
+interface OrderSummaryView {
+  orderId: string;
+  customerName: string;
+  totalPrice: number;
+  status: string;
+}
+```
+
+Note:
+
+- CQS and CQRS share the same core idea but operate at very different scales
+- CQRS is the architectural generalization of CQS
+- **CQS** (Bertrand Meyer, 1988): applies to individual methods within a class
+  - "Don't mix reading and writing in one method"
+- **CQRS** (Greg Young, ~2010): applies to the system architecture
+  - Separate the entire read model from the write model
+  - Commands go to a write stack (optimized for consistency and transactions)
+  - Queries go to a read stack (optimized for performance, often a denormalized read DB)
+  - Often combined with Event Sourcing
+- CQRS adds significant complexity — only justified for high-scale or event-driven systems
 
 --
 
