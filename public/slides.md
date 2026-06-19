@@ -723,11 +723,21 @@ function printTop(stack: Stack): void {
 }
 ```
 
+```typescript
+class ReadOnlyStack {
+  peek(): number | undefined { ... }
+}
+
+printTop(new ReadOnlyStack());
+```
+
 Note:
 
 - `printTop` only ever calls `peek()` — it never pushes or pops
 - But it is forced to depend on the full `Stack` interface
 - A `ReadOnlyStack` that only implements `peek` cannot be passed here
+- This means we either must add dummy/throwing implementations of `push`/`pop`,
+or we cannot use `printTop` with read-only stacks
 
 --
 
