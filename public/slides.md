@@ -828,6 +828,7 @@ Note:
 - Inversion of Control (IoC)
 - Separation of Concerns (SoC)
 - Composition over Inheritance
+- Deep Modules
 - Law of Demeter (LoD)
 - Command-Query Separation (CQS)
 - Minimize Cyclomatic Complexity
@@ -934,6 +935,61 @@ Note:
 
 --
 
+### Deep Modules
+
+> The best modules are those\
+> that provide powerful functionality\
+> yet have simple interfaces.
+
+Note:
+
+- Concept by John Ousterhout, from "A Philosophy of Software Design"
+- A module's **depth** is the ratio of functionality to interface complexity
+  - **Deep module**: simple interface, lots of hidden complexity (e.g. a file system, a garbage collector)
+  - **Shallow module**: complex interface relative to the functionality it provides
+- Interface complexity = the cognitive load it places on callers
+  - Not just the number of methods, but also parameters, side-effects, preconditions
+- Goal: maximize what a module does for you while minimizing what you need to know to use it
+- How?
+  - Hide implementation details behind clean interfaces
+  - Prefer fewer, more powerful methods over many narrow ones
+  - Apply information hiding (Encapsulation)
+- Why?
+  - Reduces cognitive load for callers
+  - Localizes complexity: changes stay inside the module
+  - Shallow modules are often a sign of over-decomposition (too many tiny classes)
+
+--
+
+#### Deep vs. Shallow Modules
+
+```typescript
+class ShallowFileWriter {
+  open(path: string): FileHandle;
+  write(handle: FileHandle, bytes: Uint8Array): void;
+  flush(handle: FileHandle): void;
+  close(handle: FileHandle): void;
+}
+```
+
+```typescript
+class DeepFileWriter {
+  write(path: string, content: string): void;
+}
+```
+
+Note:
+
+- The shallow version forces every caller to manage open/flush/close
+  - That's implementation detail leaking into the interface
+- The deep version hides all of that
+  - Callers only express intent: "write this content to this path"
+- Of course, the deep version is less flexible — sometimes you need the shallow API
+  - The key is to match the interface to the typical use-case and hide the rest
+  - Use composition to wrap low-level APIs
+
+--
+
 ### Law of Demeter
 
 Note:
@@ -999,3 +1055,4 @@ Note:
 - _Clean Code_ - Robert C. Martin
 - _Design Patterns_ - Erich Gamma et al.
 - _Refactoring_ - Martin Fowler
+- _A Philosophy of Software Design_ - John Ousterhout
