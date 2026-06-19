@@ -1447,11 +1447,76 @@ Note:
 
 --
 
-### Minimize Cyclomatic Complexity
+#### Violation of ?
+
+```typescript
+function estimateDeliveryDays(method: ShippingMethod): number {
+  if (method === "standard") return 5;
+  if (method === "express") return 2;
+  if (method === "overnight") return 1;
+  throw new Error("Unknown shipping method");
+}
+```
 
 Note:
 
-- less branching
+- Three shipping methods, each as a separate `if` guard
+- The function has 3 decision points → cyclomatic complexity of 4
+- To fully test this, you need 4 test cases
+- Adding a new shipping method means adding another `if` branch to the function
+
+--
+
+### Minimize Cyclomatic Complexity
+
+> Cyclomatic complexity\
+> measures the number of\
+> linearly independent paths\
+> through a function.
+
+Decision points (JavaScript): `if, else if, ?, case, &&, ||, for, while, catch`
+
+Note:
+
+- Introduced by Thomas McCabe in 1976
+- Cyclomatic complexity = number of decision points + 1
+  - Decision points: Any place where procedural code can branch, i.e. take multiple directions
+- Complexity of 1 means a single straight path (ideal)
+- Commonly recommended limits: ≤ 5 (strict), ≤ 10 (relaxed)
+- High complexity means more paths to test, harder to reason about, more likely to have bugs
+- How?
+  - Extract conditions into named predicates
+  - Replace branching with polymorphism or strategy objects (applies OCP)
+  - Apply the Single Responsibility Principle: one function, one job
+- Why?
+  - Fewer paths → fewer tests needed
+  - Simpler functions are easier to read, debug and change
+
+--
+
+#### Application
+
+of Minimizing Cyclomatic Complexity
+
+```typescript
+const DELIVERY_DAYS: Record<ShippingMethod, number> = {
+  standard: 5,
+  express: 2,
+  overnight: 1,
+};
+
+function estimateDeliveryDays(method: ShippingMethod): number {
+  return DELIVERY_DAYS[method];
+}
+```
+
+Note:
+
+- `estimateDeliveryDays` now has a single straight path: complexity of 1
+- The data and the logic are separated
+- Adding a new shipping method means adding one entry to `DELIVERY_DAYS`
+  - `estimateDeliveryDays` doesn't have to change
+- This also applies the Open/Closed Principle
 
 ---
 
