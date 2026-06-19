@@ -986,9 +986,83 @@ Note:
 
 --
 
-### Separation of Concerns
+#### Violation of ?
+
+```html
+<button
+  style="color: white; background: blue; padding: 8px 16px;"
+  onclick="window.location.href = '/page2';"
+>
+  Next page
+</button>
+```
 
 Note:
+
+- Three concerns are tangled in one element:
+  - **Structure**: what the element is (HTML)
+  - **Presentation**: how it looks (inline `style`)
+  - **Behavior**: what it does (inline `onclick`)
+- A designer can't touch the styling without opening the HTML
+- A developer can't change the behavior without hunting through markup
+- No classes involved — SoC is a concern regardless of paradigm
+
+--
+
+### Separation of Concerns
+
+> A program should be divided\
+> into distinct sections,\
+> each addressing a separate concern.
+
+Note:
+
+- Coined by Edsger Dijkstra in 1974
+- A "concern" is any distinct aspect of a system: structure, presentation, behavior, persistence, validation, logging, …
+- SoC is the **general principle** — it applies at every level and in every paradigm
+  - Architecture: MVC, layered services, microservices
+  - Modules and files: HTML vs. CSS vs. JS
+  - Classes: each class has one job → that's the **Single Responsibility Principle**
+  - SRP is the OOP-specific application of SoC
+- How?
+  - Group code by what it is _about_, not by execution order
+- Why?
+  - Each section can be understood, tested and changed in isolation
+  - A change in one concern doesn't ripple into unrelated code
+
+--
+
+#### Application
+
+of Separation of Concerns
+
+```html
+<!-- HTML: structure -->
+<button class="next">Next page</button>
+```
+
+```css
+/* CSS: presentation */
+.next {
+  color: white;
+  background: blue;
+  padding: 8px 16px;
+}
+```
+
+```javascript
+// JavaScript: behavior
+document.querySelector(".next").addEventListener("click", () => {
+  window.location.href = "/page2";
+});
+```
+
+Note:
+
+- Structure, presentation and behavior now live in separate files
+- A designer can restyle the button without touching any JavaScript
+- A developer can change the behavior without opening the HTML
+- Each file has a single, well-defined concern
 
 --
 
