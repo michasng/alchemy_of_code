@@ -846,9 +846,91 @@ Note:
 
 --
 
-### Composition over Inheritance
+#### Violation of ?
+
+```typescript
+interface Effect { apply(player: Player): void; }
+class HealthEffect implements Effect { ... }
+class StrengthEffect implements Effect { ... }
+
+class EpicPotionEffect extends HealthEffect, StrengthEffect {
+  ...
+}
+```
 
 Note:
+
+- Question: What is the violation?
+- Multiple inheritance, Diamond Problem
+  - A class tries to inherit from multiple other classes
+  - TypeScript refuses compile: "Classes can only extend a single class."
+
+--
+
+### Composition over Inheritance
+
+> Achieve polymorphic behavior\
+> and code reuse\
+> by composing objects rather than\
+> inheriting from a root class.
+
+Note:
+
+- There are two kinds of relationships between objects
+  - Inheritance models "is a" relationships (when adhering to the Liskov Substitution Principle)
+  - Composition models "has a" relationships
+- Both composition and inheritance enable code reuse
+- How?
+  - Write small classes (follow the Single Responsibility Principle)
+  - Use interfaces
+  - Assign components instead of inheriting from them
+  - Use Decorator and Composite patterns
+- Why?
+  - Inheritance hierarchies can get complex via their depth
+    - Metric: Depth of Inheritance Tree (DIT)
+  - Inheritance is static at compile time, composition is dynamic at runtime
+    - Composition is more flexible: Even at runtime
+  - It reduces coupling
+    - Inheritance creates "high coupling" (concrete base class)
+    - Composition creates "low coupling" (abstract components, interfaces)
+  - Inheritance creates friction, contracts often need to change
+  - Inheritance can hide dependencies
+    - Always consider not just this class, but also the parent class
+  - Inheritance makes it easy to violate the Single Responsibility Principle
+
+--
+
+#### Application
+
+of Composition over Inheritance
+
+```typescript
+interface Effect { apply(player: Player): void; }
+class HealthEffect implements Effect { ... }
+class StrengthEffect implements Effect { ... }
+
+class CompositeEffect implements Effect {
+  constructor(private effects: Effect[]) {}
+
+  apply(player: Player): void {
+    for (const effect of this.effects) { effect.apply(player); }
+  }
+}
+```
+
+```typescript
+const epicPotionEffect = new CompositeEffect([
+  new HealthEffect(),
+  new StrengthEffect(),
+]);
+```
+
+Note:
+
+- Using re-usable parts
+- This might take some more boilerplate and "glue-code"
+  - But declarations are easy to think about and quick to change
+  - This is still a good trade-off to make
 
 --
 
