@@ -992,10 +992,50 @@ Note:
 
 ### Law of Demeter
 
+> A module should not know\
+> about the internal details\
+> of the objects it manipulates.
+
 Note:
 
-- principle of least knowledge
-- don't talk to strangers
+- Also called the **Principle of Least Knowledge**
+- Colloquially: "Don't talk to strangers"
+- Formulated at Northeastern University (Boston, Massachusetts) in 1987 during the Demeter project
+- A method `m` of object `O` should only call methods on:
+  - `O` itself
+  - Objects passed as arguments to `m`
+  - Objects created inside `m`
+  - Direct fields of `O`
+- How?
+  - Avoid chaining calls into objects you don't directly own
+  - Expose higher-level operations instead of exposing internals
+- Why?
+  - Reduces coupling: a caller shouldn't depend on the internal structure of its dependencies
+  - Changes to internal structure don't cascade outward
+  - Code is easier to test and reason about
+
+--
+
+#### Violation of the Law of Demeter
+
+```typescript
+// reaching through a chain of objects
+const city = order.getCustomer().getAddress().getCity();
+```
+
+#### Application
+
+```typescript
+// expose only what callers need
+const city = order.getCustomerCity();
+```
+
+Note:
+
+- The chain `order → customer → address → city` means the caller knows about three layers of internal structure
+- If `Address` ever changes (e.g. `getCity()` becomes `city`), every call-site breaks
+- By delegating through `order.getCustomerCity()`, callers are shielded from internal changes
+- Note: fluent/builder APIs and functional pipelines (e.g. `array.filter(...).map(...)`) are not violations — the Law of Demeter applies to accessing *foreign* object internals, not to chaining operations on the *same* object
 
 --
 
