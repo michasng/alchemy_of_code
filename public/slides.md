@@ -1535,6 +1535,17 @@ Note:
   - Self-Validating (obvious success or failure)
   - Timely (e.g. Test Driven Development)
 
+Note:
+
+- **Testen Nicht Glauben** ("Test, don't believe") — never assume code is correct without automated proof
+- **Shift Left** — move testing and security checks earlier in the development cycle to catch defects when they are cheapest to fix
+- **F.I.R.S.T.** — five criteria; Tests should ...
+  - run fast
+  - be independent of each other
+  - produce the same result every run
+  - success and failure states should be obvious
+  - and be written sooner rather than later (ideally before the code, as in TDD)
+
 --
 
 ## Be Lazy
@@ -1545,15 +1556,34 @@ Note:
 - Keep It Simple, Stupid (KISS)
 - Don't Repeat Yourself (DRY)
 
+Note:
+
+- **YAGNI** — don't implement functionality until it is actually needed;
+  speculative features add complexity and are often never used
+- **Don't reinvent the wheel** — prefer well-tested libraries and standard solutions over building everything from scratch
+- **Make the change easy, then make the easy change** (Kent Beck) — refactor first, then implement the feature;
+  Not the other way around and not all at once
+- **KISS** — favour simple solutions
+- **DRY** — everything should have a single source of truth, also applies to logic / implementations; avoid divergence and duplication bugs
+
 --
 
 ### Coding
 
-- Make atomic changes
+- Atomic commit convention (version control)
 - Principle of Least Astonishment (POLA)
-- Write self-documenting code
+- Self-documenting code
 - Avoid nesting
 - Boy Scout Rule: Leave the code cleaner
+
+Note:
+
+- **Atomic commits** — Cut commits into the smallest unit that still makes logical sense, so you get a complete history and the ability to rollback changes with precision
+  - "Atomic commits" in general means something else: All operations succeed or all fail
+- **POLA** — code should behave in the way a reasonable developer would expect, no surprises or hidden side effects
+- **Self-documenting code** — choose expressive names and clear structure so the code explains itself without comments
+- **Avoid nesting** — deep nesting hurts readability; prefer early returns (guard clauses) to flatten control flow
+- **Boy Scout Rule** — always leave the code a little cleaner than you found it, so quality improves incrementally over time
 
 ---
 
