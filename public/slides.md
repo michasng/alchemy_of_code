@@ -610,32 +610,39 @@ Note:
 
 #### Violation of ?
 
+<!-- prettier-ignore -->
 ```typescript
-class List {
-  private items: number[] = [];
+class Stack {
+  private _items: number[] = [];
 
-  add(item: number): void {
-    this.items.push(item);
-  }
+  push(item: number): void { this._items.push(item); }
+  pop(): number | undefined { return this._items.pop(); }
+  peek(): number | undefined { return this._items.at(-1); }
 }
+```
 
-class ReadOnlyList extends List {
-  add(_item: number): void {
-    throw new Error("Cannot mutate a read-only list");
+```typescript
+class ReadOnlyStack extends Stack {
+  push(_item: number): void {
+    throw new Error("Cannot push onto a read-only stack");
+  }
+  pop(): number | undefined {
+    throw new Error("Cannot pop from a read-only stack");
   }
 }
 ```
 
 ```typescript
-function doSomethingHarmless(list: List) {
-  list.add(1);
+function transferTop(from: Stack, to: Stack): void {
+  const top = from.pop();
+  if (top !== undefined) to.push(top);
 }
 ```
 
 Note:
 
 - Question: What is the violation?
-- `ReadOnlyList` violates the contract of the `List` base class
+- `ReadOnlyStack` violates the contract of `Stack` — callers expect `push` and `pop` to always work
 - This example is inspired by real code from the standard libraries of C# and Dart
 
 --
@@ -663,6 +670,67 @@ Note:
 
 --
 
+#### Application
+
+of the Liskov Substitution Principle
+
+<!-- prettier-ignore -->
+```typescript
+class Stack {
+  private _items: number[] = [];
+
+  push(item: number): void { this._items.push(item); }
+  pop(): number | undefined { return this._items.pop(); }
+  peek(): number | undefined { return this._items.at(-1); }
+}
+```
+
+<!-- prettier-ignore -->
+```typescript
+class ReadOnlyStack {
+  constructor(private inner: Stack) {}
+
+  peek(): number | undefined { return this.inner.peek(); }
+}
+```
+
+```typescript
+function transferTop(from: Stack, to: Stack): void {
+  const top = from.pop();
+  if (top !== undefined) to.push(top);
+}
+```
+
+Note:
+
+- `ReadOnlyStack` now _wraps_ a `Stack` instead of extending it
+- It is no longer a subtype of `Stack`, so `transferTop` can never receive it
+- The contract of `Stack` is never broken
+
+--
+
+#### Violation of ?
+
+```typescript
+interface Stack {
+  push(item: number): void;
+  pop(): number | undefined;
+  peek(): number | undefined;
+}
+
+function printTop(stack: Stack): void {
+  console.log(stack.peek());
+}
+```
+
+Note:
+
+- `printTop` only ever calls `peek()` — it never pushes or pops
+- But it is forced to depend on the full `Stack` interface
+- A `ReadOnlyStack` that only implements `peek` cannot be passed here
+
+--
+
 ### Interface Segregation Principle
 
 > Clients should not be forced to depend on methods they do not use.
@@ -685,36 +753,31 @@ Note:
 of the Interface Segregation Principle
 
 ```typescript
-interface ReadableList {
-    get items(): readonly number[]
+interface ReadableStack {
+  peek(): number | undefined
 }
 
-interface MutableList {
-    add(item: number): void
+interface WritableStack {
+  push(item: number): void
+  pop(): number | undefined
 }
 
-class List implements ReadableList, MutableList { ... }
+class Stack implements ReadableStack, WritableStack { ... }
 
-class ReadOnlyList implements ReadableList { ... }
+class ReadOnlyStack implements ReadableStack { ... }
 ```
 
 ```typescript
-function doSomethingHarmless(list: MutableList) {
-  list.add(1);
+function printTop(stack: ReadableStack): void {
+  console.log(stack.peek());
 }
 ```
 
 Note:
 
-- Firstly, notice that this is not using class inheritance
-- Instead, it uses small, independent interfaces
-- That by itself has fixed the issue from before
-  - Now I can add to a list and the compiler ensures that it's not read-only
-- But keep in mind what the principle actually says
-  - "Clients should not be forced to depend on methods they do not use."
-- `doSomethingHarmless` is the client
-  - This client never reads the list
-  - So the final step to apply this principle is for the client to depend only on mutable lists
+- `printTop` now depends only on `ReadableStack` — exactly what it needs
+- `ReadOnlyStack` implements only `ReadableStack`, so it can now be passed to `printTop`
+- `transferTop` would accept `WritableStack`, keeping the two concerns cleanly separated
 
 --
 
@@ -935,6 +998,24 @@ Note:
 
 --
 
+#### Violation of ?
+
+```typescript
+class FileWriter {
+  open(path: string): FileHandle;
+  write(handle: FileHandle, bytes: Uint8Array): void;
+  flush(handle: FileHandle): void;
+  close(handle: FileHandle): void;
+}
+```
+
+Note:
+
+- Every caller must manually manage open/flush/close
+- Implementation details leak into the interface
+
+--
+
 ### Deep Modules
 
 > The best modules are those\
@@ -961,32 +1042,37 @@ Note:
 
 --
 
-#### Deep vs. Shallow Modules
+#### Application
+
+of Deep Modules
 
 ```typescript
-class ShallowFileWriter {
-  open(path: string): FileHandle;
-  write(handle: FileHandle, bytes: Uint8Array): void;
-  flush(handle: FileHandle): void;
-  close(handle: FileHandle): void;
-}
-```
-
-```typescript
-class DeepFileWriter {
+class FileWriter {
   write(path: string, content: string): void;
 }
 ```
 
 Note:
 
-- The shallow version forces every caller to manage open/flush/close
-  - That's implementation detail leaking into the interface
-- The deep version hides all of that
-  - Callers only express intent: "write this content to this path"
+- Callers only express intent: "write this content to this path"
+- All open/flush/close complexity is hidden inside
 - Of course, the deep version is less flexible — sometimes you need the shallow API
   - The key is to match the interface to the typical use-case and hide the rest
   - Use composition to wrap low-level APIs
+
+--
+
+#### Violation of ?
+
+```typescript
+// reaching through a chain of objects
+const city = order.getCustomer().getAddress().getCity();
+```
+
+Note:
+
+- The chain `order → customer → address → city` means the caller knows about three layers of internal structure
+- If `Address` ever changes (e.g. `getCity()` becomes `city`), every call-site breaks
 
 --
 
@@ -1016,14 +1102,9 @@ Note:
 
 --
 
-#### Violation of the Law of Demeter
-
-```typescript
-// reaching through a chain of objects
-const city = order.getCustomer().getAddress().getCity();
-```
-
 #### Application
+
+of the Law of Demeter
 
 ```typescript
 // expose only what callers need
@@ -1032,10 +1113,8 @@ const city = order.getCustomerCity();
 
 Note:
 
-- The chain `order → customer → address → city` means the caller knows about three layers of internal structure
-- If `Address` ever changes (e.g. `getCity()` becomes `city`), every call-site breaks
 - By delegating through `order.getCustomerCity()`, callers are shielded from internal changes
-- Note: fluent/builder APIs and functional pipelines (e.g. `array.filter(...).map(...)`) are not violations — the Law of Demeter applies to accessing *foreign* object internals, not to chaining operations on the *same* object
+- Note: fluent/builder APIs and functional pipelines (e.g. `array.filter(...).map(...)`) are not violations — the Law of Demeter applies to accessing _foreign_ object internals, not to chaining operations on the _same_ object
 
 --
 
