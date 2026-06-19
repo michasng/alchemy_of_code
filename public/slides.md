@@ -737,7 +737,7 @@ Note:
 - But it is forced to depend on the full `Stack` interface
 - A `ReadOnlyStack` that only implements `peek` cannot be passed here
 - This means we either must add dummy/throwing implementations of `push`/`pop`,
-or we cannot use `printTop` with read-only stacks
+  or we cannot use `printTop` with read-only stacks
 
 --
 
@@ -908,9 +908,81 @@ Note:
 
 --
 
-### Inversion of Control
+#### Violation of ?
+
+```typescript
+class OrderService {
+  private repository = new PostgresRepository<Order>();
+  private mailer = new SmtpMailer();
+
+  placeOrder(order: Order): void {
+    this.repository.save(order);
+    this.mailer.send(`Order ${order.id} confirmed`);
+  }
+}
+```
 
 Note:
+
+- `OrderService` calls `new` itself — it controls which implementations to create
+- To use a different repository or mailer, you must modify `OrderService`
+- Impossible to swap implementations for testing
+
+--
+
+### Inversion of Control
+
+> Don't call us, we'll call you.
+
+Note:
+
+- Also known as the **Hollywood Principle**
+- Traditional flow: your code controls everything — it decides which implementations to create and when to call them
+- Inverted flow: control over instantiation and lifecycle is handed to an external caller
+- Common implementations:
+  - **Dependency Injection** — dependencies are provided from the outside
+  - Callbacks and event listeners — the framework calls your function
+  - Template Method pattern — the base class controls the flow, subclasses fill in steps
+- Recall DIP: DIP is about _what_ you depend on (abstractions)
+  - IoC is about _who controls_ instantiation and flow (the caller, not the class)
+- Why?
+  - Decouples components from their dependencies
+  - Implementations become easy to swap — e.g. for testing
+
+--
+
+#### Application
+
+of Inversion of Control
+
+```typescript
+class OrderService {
+  constructor(
+    private repository: Repository<Order>,
+    private mailer: Mailer,
+  ) {}
+
+  placeOrder(order: Order): void {
+    this.repository.save(order);
+    this.mailer.send(`Order ${order.id} confirmed`);
+  }
+}
+```
+
+<!-- prettier-ignore -->
+```typescript
+const service = new OrderService(
+  new PostgresRepository(),
+  new SmtpMailer(),
+);
+```
+
+Note:
+
+- `OrderService` no longer calls `new` — it just declares what it needs
+- The caller decides which implementations to provide
+- Swapping to a mock mailer in tests requires no changes to `OrderService`
+- This specific form of IoC is called **Dependency Injection (DI)**
 
 --
 
