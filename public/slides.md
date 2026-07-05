@@ -22,7 +22,7 @@ Note:
 
 Note:
 
-- What <strong>is</strong> or <strong>isn't</strong> this talk about?
+- What **is** or **isn't** this talk about?
 - In one sentence, I want to explain the guiding principles to writing good software.
 - I used to memorize **software design patterns**
   - Some can be **anti-patterns** (e.g. **Singletons** or **Service Locators**)
@@ -71,7 +71,7 @@ Note:
   - E.g. "The dog chased the cat" is correct, while "Chased the cat the dog" is not
   - Compiler/Interpreter can verify syntax without/before executing the program
   - **Hello World** - Writing code that executes at all is typically the first thing to learn
-- **Semantics** 
+- **Semantics**
   - Whether a sentence makes any sense
   - E.g. "Colorless green ideas sleep furiously." is syntactically correct, but makes no sense semantically
   - In the same sense, I could write a program that runs, but doesn't do anything meaningful
@@ -87,7 +87,7 @@ Note:
     - The teacher **implies a different context**, where "can" relates to the ability rather than the permission.
   - It's the same in programming, where e.g. an `AppleProvider` might provide fruits or smartphones, depending on the context
     - **Domain Driven Design** tells us to use **Ubiquitous Language**:
-    Using the vocabulary of the domain within the code
+      Using the vocabulary of the domain within the code
   - pragmatic considerations to design a system
     - many ways to solve the same problem, not all solutions are equally pragmatic
     - This is going to be the main focus of this talk
@@ -101,7 +101,7 @@ Note:
 - What is a paradigm?
   - Exists in many contexts, outside of programming, e.g. philosophy
   - Here: "a high-level approach to conceptualize and structure the implementation of a program"
- 
+
 --
 
 declarative\
@@ -320,10 +320,8 @@ Note:
 
 Note:
 
-- Every skyscraper starts with a solid base
-- In software, we often build on sand and wonder why the roof leaks.
-- So, when the object oriented paradigm emerged, people came up with features or "pillars" that a system should follow in order to call itself "object oriented".
-- This is less about <strong>you</strong> than it is about the <strong>system</strong>.
+- In OOP, people came up with features or "pillars" that a system should follow in order to call itself "object oriented".
+- This is less about **you** than it is about the **system**.
 - However, it's still important to understand how the system works in order for you to know how you should use it.
 
 --
@@ -1677,6 +1675,7 @@ Note:
 https://github.com/michasng/alchemy_of_code
 
 Note:
+
 - That's it.
 - I hope you found this talk interesting
 - You can find the slides right here
