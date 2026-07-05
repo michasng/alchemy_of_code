@@ -17,14 +17,74 @@
 Note:
 
 - What <strong>is</strong> or <strong>isn't</strong> this talk about?
-- take you along on my personal learning journey about how to write high quality software
-- used to memorize software design patterns
-- underlying principles are more important
-- explain the most common and important principles in enough depth to apply them
-- this isn't an exhaustive list
-- not a talk about security principles or testing techniques
-- I won't go into the obvious ones (DRY, KISS)
-- focus on software development and OOP
+- In one sentence, I want to explain the guiding principles to writing good software.
+- I used to memorize **software design patterns**
+  - Some can be **anti-patterns** (e.g. **Singletons** or **Service Locators**)
+  - Now focus more on underlying **principles** and their **trade-offs**
+  - Applied principles can lead to the accidental discovery of existing design patterns
+  - Deeper understanding of **why** a solution is good or bad
+- And that's why we will _mostly_ talk about **software design principles**
+  - When to use them?
+  - Trade-Offs?
+  - Realistic examples, where I encourage active participation
+- Also about **programming paradigms** and the so called **pillars of OOP**
+  - Often mentioned in our coding interviews
+  - I see a lot of misunderstandings surrounding those
+  - Fundamental to writing good software
+- My lists of paradigms and principles are not exhaustive
+  - A selection that I found most relevant for my everyday work
+
+---
+
+## Linguistics
+
+<div style="display: flex; flex-direction: column; align-items: stretch; width: 100%">
+  <div style="background-color: #bb5500">
+    <h3>Pragmatics (Context)</h3>
+    <p style="line-height: 1">Why?</p>
+    <p style="line-height: 1">Domain, Principles, Trade-Offs</p>
+  </div>
+  <div style="background-color: #993300">
+    <h3>Semantics (Meaning)</h3>
+    <p style="line-height: 1">What? How?</p>
+    <p style="line-height: 1">Control Flow, Boolean Logic, State</p>
+  </div>
+  <div style="background-color: #771100">
+    <h3>Syntax (Grammar)</h3>
+    <p style="line-height: 1">Language Constructs</p>
+  </div>
+</div>
+
+Note:
+
+- Spent some time thinking about **how** we learn to program
+- Programming languages are **formal languages**, we can use **linguistics** to understand them
+- Some subfields of linguistics that we can picture as "layers" to describe languages
+- **Syntax**
+  - How we arrange words and phrases into coherent sentences
+  - E.g. "The dog chased the cat" is correct, while "Chased the cat the dog" is not
+  - Compiler/Interpreter can verify syntax without/before executing the program
+  - **Hello World** - Writing code that executes at all is typically the first thing to learn
+- **Semantics** 
+  - Whether a sentence makes any sense
+  - E.g. "Colorless green ideas sleep furiously." is syntactically correct, but makes no sense semantically
+  - In the same sense, I could write a program that runs, but doesn't do anything meaningful
+  - To write semantically correct programs, I need to learn about **control flow**, **boolean logic** and **state**
+  - The semantic possibilities of a language dictate which **programming paradigms** are best supported
+    - Of course every **Turing Complete** language can simulate any paradigm
+    - But some languages are semantically more tuned to certain paradigms
+  - Semantics depend on syntax
+    - E.g. I can only create objects in Java, because the Syntax allows me to define a class
+- **Pragmatics**
+  - The same semantically correct sentence might have totally **different meanings**, depending on the **context**
+  - E.g. When a student asks the teacher "Can I go to the bathroom?" and the teacher replies "I don't know. Can you?"
+    - The teacher **implies a different context**, where "can" relates to the ability rather than the permission.
+  - It's the same in programming, where e.g. an `AppleProvider` might provide fruits or smartphones, depending on the context
+    - **Domain Driven Design** tells us to use **Ubiquitous Language**:
+    Using the vocabulary of the domain within the code
+  - pragmatic considerations to design a system
+    - many ways to solve the same problem, not all solutions are equally pragmatic
+    - This is going to be the main focus of this talk
 
 ---
 
