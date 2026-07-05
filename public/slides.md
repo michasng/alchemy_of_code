@@ -293,10 +293,10 @@ and having no state makes it arguably easier to **debug** and **test** and
 
 ```typescript
 class Group {
-  constructor(private members: Person[]) {}
+  constructor(private people: Person[]) {}
 
   getShortNames(): string[] {
-    return this.members
+    return this.people
       .filter((person) => person.hasShortName())
       .map((person) => person.name);
   }
