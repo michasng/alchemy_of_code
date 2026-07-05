@@ -320,9 +320,9 @@ Note:
 
 Note:
 
-- In OOP, people came up with features or "pillars" that a system should follow in order to call itself "object oriented".
-- This is less about **you** than it is about the **system**.
-- However, it's still important to understand how the system works in order for you to know how you should use it.
+- In OOP, people came up with features or "pillars" that a system should follow in order to call itself "object oriented"
+- This is less about **you** than it is about the **system**
+- However, it's still important to understand how the system works in order for you to know how you should use it
 
 --
 
@@ -359,7 +359,7 @@ Note:
     - Benefit of high cohesion: Things that belong together are in the same place
   - Restricting access to members through defined interfaces
     - Benefit of low coupling: Fewer interdependencies between modules
-    - Theoretically unable to reach incorrect or inconsistent states at runtime
+    - Helps prevent incorrect or inconsistent states at runtime
 
 --
 
@@ -375,14 +375,14 @@ abstract class Animal {
 
 Note:
 
-- The term abstraction comes from latin and apparently means "to draw away"
+- The term abstraction comes from latin and means "to draw away" / "to remove"
 - It's typically used as viewing a concept or idea detached from specific instances or physical objects
-- The real world is complex, but not all of this complexity is relevant to the goal of the software.
-- Abstraction simplifies complexity by modeling only the essentials.
-- Unnecessary details are disregarded.
+- The real world is complex, but not all of this complexity is relevant to the goal of the software
+- Abstraction simplifies complexity by modeling only the essentials
+- Unnecessary details are disregarded
 - Thinking back to "declarative" and "imperative" paradigms:
-  - Abstraction separates what something does from how it is implemented
-  - A good example of that is an abstract class or an interface
+  - Abstraction separates **what** something does from **how** it is implemented
+  - e.g. abstract classes or interfaces
 
 --
 
@@ -430,10 +430,11 @@ coercion
 
 Note:
 
-- Polymorphism can mean many things
+- There are different kinds of polymorphism
 - People often get them confused
   - I often participate in our TNG interviews
-  - Barely anyone really understands this
+  - Few people really seem to understand this concept, or they give a textbook definition verbatim
+- Polymorphism generally means "having multiple types"
 - In the context of OOP, we typically mean "subtype polymorphism"
 
 --
@@ -462,8 +463,7 @@ Note:
 - A reference to a super-type can refer to any derived type
 - A subtype can provide a specific implementation for a method defined by its super-type
 - Control flow is determined at runtime (AKA dynamic / late binding)
-  - Based on the actual type of the object whose member is called (the type of "this" / "self")
-  - The parameter and return types don't matter!
+- Which method is called, depends on the type of the object itself (not on the parameter types)
 - Remember to apply the Liskov Substitution Principle (LSP)! (presented later)
 
 --
@@ -505,7 +505,7 @@ Note:
   - Control flow is typically determined at compile time (AKA static / early binding)
     - There are exceptions (interpreted languages, Julia, Common Lisp) where control flow is determined at runtime, based on the actual parameter types
   - TypeScript is forced to implement this in a weird way, because here you can overload signatures, but all of them share a single implementation
-    - Other languages like Java allow you to have different signatures for the same method name
+    - Other languages like Java allow you to declare independent methods with the same name
 - Parametric polymorphism
   - Declarations using "generic" instead of "concrete" types
   - Abstract symbols that can substitute for any type
@@ -515,7 +515,7 @@ Note:
     - Monomorphization - compilation generates type-specific code (e.g. Rust, C++, C# at runtime for value types)
     - Type erasure - compilation discards type information or the runtime uses dynamic typing (e.g. Java using "Boxing" for value types, C# for reference types, TypeScript, Python)
 - Coercion polymorphism
-  - This happens when a language automatically converts a value from one type to another to match a function's requirements
+  - This happens when a language automatically converts a value from one type to another to match a function's (or operator's) requirements
   - AKA implicit type conversion or "weak" typing
   - Other example: Passing an int to a function expecting a float
 
@@ -615,7 +615,7 @@ Note:
 #### Violation of ?
 
 ```typescript
-class AreaCalculator {
+class TotalAreaCalculator {
   calculate(shapes: Array<Rectangle | Circle>): number {
     return shapes.reduce((sum, shape) => {
       if (shape instanceof Rectangle) {
@@ -632,6 +632,9 @@ class AreaCalculator {
 Note:
 
 - Question: What is the violation?
+- Adding another type of shape requires that we modify the existing code
+  - Say we wanted to offer this as a library, there would be no simple way to extend this
+- Single Responsibility is also violated
 
 --
 
@@ -649,7 +652,7 @@ Note:
 - How?
   - Apply the Single Responsibility Principle
   - Use composition ("has a" relationships)
-  - Avoid "instance of" code-smell
+  - Avoid runtime type checks ("instance of" code-smell)
 - Why?
   - Makes code flexible and re-usable
   - Reduces the risk of breaking things from modification
@@ -666,7 +669,7 @@ interface Shape {
   area(): number;
 }
 
-class AreaCalculator {
+class TotalAreaCalculator {
   calculate(shapes: Shape[]): number {
     return shapes.reduce((sum, shape) => sum + shape.area(), 0);
   }
@@ -981,7 +984,7 @@ Note:
 
 - These principles are broader than SOLID — they apply across paradigms and at different levels of abstraction
 - Some overlap with SOLID; we'll see how they complement each other
-- Same format: violation first, principle explained, then a better solution
+- Same format: violation first, explanation, then application
 
 --
 
@@ -1080,8 +1083,7 @@ Note:
   - **Structure**: what the element is (HTML)
   - **Presentation**: how it looks (inline `style`)
   - **Behavior**: what it does (inline `onclick`)
-- A designer can't touch the styling without opening the HTML
-- A developer can't change the behavior without hunting through markup
+- Nobody can change the styling or behavior without searching through the markup
 - No classes involved — SoC is a concern regardless of paradigm
 
 --
@@ -1100,9 +1102,9 @@ Note:
   - Architecture: MVC, layered services, microservices
   - Modules and files: HTML vs. CSS vs. JS
   - Classes: each class has one job → that's the **Single Responsibility Principle**
-  - SRP is the OOP-specific application of SoC
+    - SRP is the OOP-specific application of SoC
 - How?
-  - Group code by what it is _about_, not by execution order
+  - Group code by what it is _about_
 - Why?
   - Each section can be understood, tested and changed in isolation
   - A change in one concern doesn't ripple into unrelated code
