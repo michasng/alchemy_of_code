@@ -254,7 +254,7 @@ Note:
 ## Functional (Declarative)
 
 <!-- prettier-ignore -->
-```typescript [|1,5|]
+```typescript
 const isShort = (name: string) => name.length < 6;
 
 const shortNames = people
