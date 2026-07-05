@@ -308,7 +308,6 @@ Note:
 
 - Every skyscraper starts with a solid base
 - In software, we often build on sand and wonder why the roof leaks.
-- In Germany we say: "Kranplätze müssen verdichtet sein!"
 - So, when the object oriented paradigm emerged, people came up with features or "pillars" that a system should follow in order to call itself "object oriented".
 - This is less about <strong>you</strong> than it is about the <strong>system</strong>.
 - However, it's still important to understand how the system works in order for you to know how you should use it.
