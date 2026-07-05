@@ -6,6 +6,12 @@
 
 [Micha Sengotta](https://github.com/michasng)
 
+Note:
+
+- Welcome everyone
+- The title is a metaphor: turning messy, tangled code into something clean and valuable
+- This talk is about the principles behind that transformation — not magic, but craft
+
 ---
 
 <!-- .slide: data-background-image="https://static01.nyt.com/images/2023/10/25/multimedia/25nightmare-anniv-01-tfvj/25nightmare-anniv-01-tfvj-videoSixteenByNineJumbo1600.jpg" data-background-opacity="0.3" -->
@@ -93,7 +99,9 @@ Note:
 Note:
 
 - What is a paradigm?
-
+  - Exists in many contexts, outside of programming, e.g. philosophy
+  - Here: "a high-level approach to conceptualize and structure the implementation of a program"
+ 
 --
 
 declarative\
@@ -106,6 +114,12 @@ reactive\
 meta\
 generic\
 ...
+
+Note:
+
+- There are many paradigms — this list is not exhaustive
+- Most modern languages are **multi-paradigm**: they support several of these at once
+- We'll focus on the most prevalent ones
 
 --
 
@@ -201,9 +215,9 @@ Note:
   - so it's easier to debug the specific steps
   - and it allows for fine-grained optimizations
 - Declarative has a higher level of abstraction
-  - implementation details are hides,
+  - implementation details are hidden
   - making it more readable and maintainable, because there is less to worry about
-- So it's definitely a trade-off, but in many use-cases, the benefits of declarative code outweigh the downsides.
+- It's a trade-off, but in many use-cases, the benefits of declarative code outweigh the downsides
 
 --
 
@@ -965,6 +979,12 @@ Note:
 - Command-Query Separation (CQS)
 - Minimize Cyclomatic Complexity
 
+Note:
+
+- These principles are broader than SOLID — they apply across paradigms and at different levels of abstraction
+- Some overlap with SOLID; we'll see how they complement each other
+- Same format: violation first, principle explained, then a better solution
+
 --
 
 #### Violation of ?
@@ -1580,6 +1600,12 @@ Note:
 ---
 
 ## Honorary Mentions
+
+Note:
+
+- There are a lot of principles that I had no time to cover
+- I will give a quick rundown of what we skipped over
+  - You can dig deeper on your own accord
 
 --
 
