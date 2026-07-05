@@ -472,13 +472,15 @@ Note:
 
 #### Ad hoc (Overloading)
 
+<!-- prettier-ignore -->
 ```typescript
 class Dog {
-  speak(): string;
+  speak(sound: string): string;
   speak(times: number): string;
-  speak(times?: number): string {
-    if (times) return "Woof! ".repeat(times).trim();
-    return "Woof!";
+  speak(arg: string | number): string {
+    const [sound, times] = typeof arg === "string"
+      ?  [arg, 3] : ["Woof! ", arg];
+    return sound.repeat(times).trim();
   }
 }
 ```
@@ -486,9 +488,7 @@ class Dog {
 #### Parametric (Generics)
 
 ```typescript
-interface Factory<T> {
-    T create()
-}
+interface Factory<T> { T create(); }
 ```
 
 #### Coercion (Weak Typing)
