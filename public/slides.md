@@ -1434,7 +1434,6 @@ const city = order.getCustomerCity();
 - Note: fluent/builder APIs and functional pipelines (e.g. `array.filter(...).map(...)`) are not violations — the Law of Demeter applies to accessing _foreign_ object internals, not to chaining operations on the _same_ object
 
 -->
-
 --
 
 #### Violation of ?
@@ -1483,8 +1482,10 @@ Note:
 Note:
 
 - Coined by Bertrand Meyer in "Object-Oriented Software Construction" (1988)
-- **Command**: changes state, returns `void`
-- **Query**: returns data, has no side-effects — safe to call multiple times
+- not to be confused with **CQRS** (Command Query Responsibility Segregation)
+- Method should only be one of:
+  - **Command**: changes state, returns `void`
+  - **Query**: returns data, has no side-effects — safe to call multiple times
 - In other words, asking a question should not change the answer.
 - How?
   - Name commands as actions, mutate state and don't return a value
@@ -1573,7 +1574,7 @@ Note:
   - The checkout (command) checks validity, calculates the price and redeems the promo code when the purchase succeeds;
     The checkout doesn't need to return a price, it only needs to indicate success
 
---
+<!-- --
 
 ### CQS vs. CQRS
 
@@ -1595,7 +1596,8 @@ interface OrderSummaryView {
 }
 ```
 
-Note:
+-->
+<!-- Note:
 
 - CQS and CQRS share the same core idea but operate at very different scales
 - CQRS is the architectural generalization of CQS
@@ -1607,6 +1609,8 @@ Note:
   - Queries go to a read stack (optimized for performance, often a denormalized read DB)
   - Often combined with Event Sourcing
 - CQRS adds significant complexity — only justified for high-scale or event-driven systems
+
+-->
 
 --
 
