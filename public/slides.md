@@ -1343,6 +1343,7 @@ Note:
 Note:
 
 - Concept by John Ousterhout, from "A Philosophy of Software Design"
+  - Gave a talk during our Big Techday 2024
 - A module's **depth** is the ratio of functionality to interface complexity
   - **Deep module**: simple interface, lots of hidden complexity (e.g. a file system, a garbage collector)
   - **Shallow module**: complex interface relative to the functionality it provides
