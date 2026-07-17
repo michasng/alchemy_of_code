@@ -62,11 +62,11 @@ note:
 
 note:
 
-- I tend to start at the level of syntax
+- I first learned to program at the level of syntax
 - How we arrange words and phrases into coherent sentences
 - E.g. "The dog chased the cat" is correct, while "Chased the cat the dog" is not
 - **Hello World** - code that executes at all
-- At the start, we tend to struggle to write anything that even compiles, which becomes increasingly rare over time
+- At the start, we may struggle to write anything that even compiles, which becomes increasingly rare with experience
 - Compiler/Interpreter can verify syntax without/before executing the program
 
 --
@@ -229,13 +229,11 @@ Note:
 
 Machine code / assembly is imperative:
 
-> Move this data here.\
-> Then add these values.
+> Boil water, grid beans, ...
 
 Humans can do both, but steps are often implied:
 
-> I need coffee.\
-> (boil water, grid beans, ...)
+> I want coffee.
 
 Note:
 
@@ -271,11 +269,11 @@ Note:
 - Sometimes they're called "procedures", other times "functions" or "subroutines"
 - the essence is re-usable code that calls other re-usable code
   - at runtime, this is typically represented by a call stack
-  - an entire program could be represented by a call tree
+  <!-- - an entire program could be represented by a call tree -->
 - a person in this example is a "record"
   - that's a combound data type, made up of a fixed set of fields
   - that's the procedural term for an object
-  - so you don't necessarily need OOP in order to have something like an object, more on that later
+  - so you don't necessarily need OOP in order to have something like an object
 
 --
 
@@ -298,22 +296,23 @@ Note:
 - functions are "first-class citizens"
   - they can be assigned to variables, passed around as arguments and be returned by other functions
 - relies on pure functions (also called "purely functional programming")
-  - deterministic
+  - deterministic (same thing in, same thing out)
     <!-- - the same arguments always leads to the same return value -->
-  - no side-effects
+  - no side-effects (just returns a value)
     <!-- - the only thing it does is to determine the return value based on the arguments -->
     <!-- - it doesn't modify non-local variables or perform I/O operations -->
-  - "same thing in, same thing out" and that's all it does
 - functional programming eliminates the possibility of some **bugs**
 and having no state makes it arguably easier to **debug** and **test** and
 <!-- - roots in academia, comes from "lambda calculus", a system of computation based only on functions -->
 - It's declarative in the sense that we don't explicitly state when and how the runtime iterates and when a condition executes.
 - Of course, the runtime still has to these things.
+<!--
 - So, in the case of JavaScript, these array functions are not lazily evaluated.
   - `map` returns another array
   - So from a performance standpoint, it's not ideal that we `filter` after the entire array is mapped.
   - Ideally, the API would evaluate lazily and then the order of our declarations would make less of a difference.
   - because that's the point of declarative programming: To not have to think about the concrete steps
+    -->
 
 --
 
@@ -409,16 +408,7 @@ hierarchical reuse of code
 Note:
 
 - Hierarchical tree-structures that enable implementation sharing / code reuse
-- Can be implemented via prototypes or classes
-- Prototypes
-  - Inheritance on the level of objects
-  - An object can be linked to another object, called parent or prototype
-  - Up to the "base" object, which has no prototype
-    <!-- - Every object -->
-      <!-- - Inherits the properties of it's prototype -->
-      <!-- - Can define additional properties -->
-    <!-- - Optional -->
-      <!-- - Multiple inheritance allows having multiple prototypes -->
+- Can be implemented via classes or prototypes
 - Classes
   - Most common approach
   - Inheritance on the level of classes
@@ -433,6 +423,15 @@ Note:
       <!-- - Static members are class-specific instead of instance-specific -->
       <!-- - Multiple inheritance allows having multiple direct super-classes -->
       <!-- - Additional constructs like mixins, traits or interfaces -->
+- Prototypes
+  - Inheritance on the level of objects
+  - An object can be linked to another object, called parent or prototype
+  - Up to the "base" object, which has no prototype
+    <!-- - Every object -->
+      <!-- - Inherits the properties of it's prototype -->
+      <!-- - Can define additional properties -->
+    <!-- - Optional -->
+      <!-- - Multiple inheritance allows having multiple prototypes -->
 - What I want you to take away is that classes are not strictly necessary for inheritance, as long as hierarchical reuse of code is possible in some way
 
 --
@@ -476,11 +475,11 @@ Note:
 
 - AKA "inclusion polymorphism" or "method overriding"
 - Using inheritance OR interfaces
-- A reference to a super-type can refer to any derived type
+- A reference to a super-type (`Animal`) can refer to any derived type (`Dog` or `Cat`)
 - A subtype (`Dog`) can provide a specific implementation for a method defined by its super-type (`Animal`)
 - Control flow is determined at runtime (AKA dynamic / late binding)
 - Which method is called, depends on the type of the object itself (not on the parameter types)
-- Remember to apply the Liskov Substitution Principle (LSP)! (presented later)
+<!-- - Remember to apply the Liskov Substitution Principle (LSP)! (presented later) -->
 
 --
 
@@ -519,22 +518,18 @@ Note:
   - A function can have multiple implementations with different signatures, specifically parameter types
   - AKA function or operator overloading
   - Control flow is or at least can be determined at compile time
-  <!--
-  - Control flow is typically determined at compile time (AKA static / early binding)
-    - There are exceptions (interpreted languages, Julia, Common Lisp) where control flow is determined at runtime, based on the actual parameter types
-      -->
+    <!-- - Control flow is typically determined at compile time (AKA static / early binding) -->
+      <!-- - There are exceptions (interpreted languages, Julia, Common Lisp) where control flow is determined at runtime, based on the actual parameter types -->
   - TypeScript is forced to implement this in a weird way, because here you can overload signatures, but all of them share a single implementation
     - Other languages like Java allow you to declare independent methods with the same name
 - Parametric polymorphism
   - Declarations using "generic" instead of "concrete" types
   - Abstract symbols that can substitute for any type
-  <!--
-  - Generic programming (AKA "templates" in C++)
-  - Typically checked at compile time
-  - Different approaches, depending on the language
-    - Monomorphization - compilation generates type-specific code (e.g. Rust, C++, C# at runtime for value types)
-    - Type erasure - compilation discards type information or the runtime uses dynamic typing (e.g. Java using "Boxing" for value types, C# for reference types, TypeScript, Python)
-      -->
+    <!-- - Generic programming (AKA "templates" in C++) -->
+    <!-- - Typically checked at compile time -->
+    <!-- - Different approaches, depending on the language -->
+      <!-- - Monomorphization - compilation generates type-specific code (e.g. Rust, C++, C# at runtime for value types) -->
+      <!-- - Type erasure - compilation discards type information or the runtime uses dynamic typing (e.g. Java using "Boxing" for value types, C# for reference types, TypeScript, Python) -->
 - Coercion polymorphism
   - This happens when a language automatically converts a value from one type to another to match a function's (or operator's) requirements
   - AKA implicit type conversion or "weak" typing
@@ -996,7 +991,7 @@ Note:
 - We introduce a `Repository` abstraction
 - Both of our concrete classes depend on the abstraction, but in different ways
   - The high-level service uses the abstraction
-  - The low-level `InMemoryRepository` realizes the abstraction
+  - The low-level `InMemoryUserRepository` realizes the abstraction
     - It is one among many possible `Repository` implementations
 - These two classes are now decoupled
 
@@ -1046,6 +1041,7 @@ Note:
 
 - `OrderService` calls `new` itself — it controls which implementations to create
 - To use a different repository or mailer, you must modify `OrderService`
+  - Violates the Open/Closed Principle
 - Impossible to swap implementations for testing
 
 --
@@ -1063,8 +1059,6 @@ Note:
   - **Dependency Injection** — dependencies are provided from the outside
   - Callbacks and event listeners — the framework calls your function
   - Template Method pattern — the base class controls the flow, subclasses fill in steps
-- Recall DIP: DIP is about _what_ you depend on (abstractions)
-  - IoC is about _who controls_ instantiation and flow (the caller, not the class)
 - Why?
   - Decouples components from their dependencies
   - Implementations become easy to swap — e.g. for testing
@@ -1108,7 +1102,7 @@ Note:
 
 ### IoC and DIP
 
-|               | DIP                           | IoC                               |
+|               | DIP (SOLID)                   | IoC                               |
 | ------------- | ----------------------------- | --------------------------------- |
 | **Question**  | What do you depend on?        | Who provides it?                  |
 | **Answer**    | Abstractions, not concretions | The caller, not the class         |
@@ -1117,7 +1111,7 @@ Note:
 Note:
 
 - DIP and IoC are complementary — you almost always apply them together
-- **DIP** (from SOLID) defines the _shape_ of the dependency: depend on an abstraction, not a concrete class
+- **DIP** (from SOLID) defines _what_ to depend on: an abstraction, not a concrete class
 - **IoC** defines _who controls_ the lifecycle: the dependency is provided from the outside, not constructed internally
 <!--
 - In practice: DIP gives you the interface, IoC gives you the wiring
@@ -1209,7 +1203,7 @@ Note:
 
 ### SoC and SRP
 
-|              | SoC                             | SRP                                         |
+|              | SoC                             | SRP (SOLID)                                 |
 | ------------ | ------------------------------- | ------------------------------------------- |
 | **Paradigm** | Universal                       | OOP-specific                                |
 | **Scope**    | Any level of a system           | A specific module, class or method          |
@@ -1218,13 +1212,11 @@ Note:
 Note:
 
 - **SoC** (Dijkstra, 1974) is the general principle — it applies at every level
-  - Architecture: MVC layers, microservices, HTML/CSS/JS
-  - Modules: grouping files by concern
-  - Functions: one function, one job
+  - Architecture (MVC layers, microservices, HTML/CSS/JS)
+  - Modules (grouping files by concern)
+  - Functions (one function, one job)
 - **SRP** (from SOLID) is the OOP-specific application of SoC at the class level
   - "One reason to change" is just SoC stated in terms of classes
-- SoC is the _why_, SRP is the _how_ inside an object-oriented codebase
-- If you find yourself asking "does this class do too much?", you are applying SoC — and SRP gives you the concrete rule to answer it
 
 --
 
@@ -1295,7 +1287,7 @@ class CompositeEffect implements Effect {
   constructor(private effects: Effect[]) {}
 
   apply(player: Player): void {
-    for (const effect of this.effects) { effect.apply(player); }
+    for (const effect of this.effects) effect.apply(player);
   }
 }
 ```
@@ -1310,16 +1302,17 @@ const epicPotionEffect = new CompositeEffect([
 Note:
 
 - Using re-usable parts
-- This might take some more boilerplate and "glue-code"
-  - But declarations are easy to think about and quick to change
-  - This is still a good trade-off to make
+- This just takes some "glue-code"
+  - Encourage you not to think of this as boilerplate
+  - Declarations are easy to think about and quick to change
+  - This is a good trade-off to make
 
 --
 
 #### Violation of ?
 
 ```typescript
-class FileWriter {
+interface FileWriter {
   open(path: string): FileHandle;
   write(handle: FileHandle, bytes: Uint8Array): void;
   flush(handle: FileHandle): void;
@@ -1345,11 +1338,11 @@ Note:
 - Concept by John Ousterhout, from "A Philosophy of Software Design"
   - Gave a talk during our Big Techday 2024
 - A module's **depth** is the ratio of functionality to interface complexity
-  - **Deep module**: simple interface, lots of hidden complexity (e.g. a file system, a garbage collector)
+  - **Deep module**: simple interface, lots of hidden complexity
   - **Shallow module**: complex interface relative to the functionality it provides
 - Interface complexity = the cognitive load it places on callers
   - Not just the number of methods, but also parameters, side-effects, preconditions
-- Goal: maximize what a module does for you while minimizing what you need to know to use it
+- Goal: maximize what a module does for you, while minimizing what you need to know to use it
 - How?
   - Hide implementation details behind clean interfaces
   - Prefer fewer, more powerful methods over many narrow ones
@@ -1366,7 +1359,7 @@ Note:
 of Deep Modules
 
 ```typescript
-class FileWriter {
+interface FileWriter {
   write(path: string, content: string): void;
 }
 ```
@@ -1376,7 +1369,7 @@ Note:
 - Callers only express intent: "write this content to this path"
 - All open/flush/close complexity is hidden inside
 - Of course, the deep version is less flexible — sometimes you need the shallow API
-  - The key is to match the interface to the typical use-case and hide the rest
+  - Match the interface to the typical use-case and hide the rest
   - Use composition to wrap low-level APIs
 
 --
@@ -1802,7 +1795,7 @@ Note:
   - But from experience, I would say that something like this makes a big difference
 - And this is just an example
   - Be as specific as you want: List anti-patterns, naming conventions, etc.
-- So I hope some of the principles today are worthy to end up in your instructions files 
+- So I hope some of the principles today are worthy to end up in your instructions files
 
 ---
 
