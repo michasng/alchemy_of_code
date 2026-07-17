@@ -177,7 +177,7 @@ imperative commands
 
 Note:
 
-- Grammatical mood
+- Grammatical mood (we're back to linguisticts)
   - DE: Modus
   - A feature of verbs to express "modality" / the attitude of the speaker toward what they are saying
 - Declarative mood
@@ -292,13 +292,13 @@ Note:
 
 - Functional programming is similar to procedural programming, but without the imperative elements
 - the program still forms a call tree
-- there is no mutable state
+- but there is no mutable state
 - functions are "first-class citizens"
   - they can be assigned to variables, passed around as arguments and be returned by other functions
 - relies on pure functions (also called "purely functional programming")
   - deterministic (same thing in, same thing out)
     <!-- - the same arguments always leads to the same return value -->
-  - no side-effects (just returns a value)
+  - no side-effects (just returns a value and does nothing else)
     <!-- - the only thing it does is to determine the return value based on the arguments -->
     <!-- - it doesn't modify non-local variables or perform I/O operations -->
 - functional programming eliminates the possibility of some **bugs**
@@ -1746,7 +1746,7 @@ Note:
 
 --
 
-## Be "Lazy"
+## Be "Lazy" or Minimalist
 
 - You Aren't Gonna Need It (YAGNI)
 - Don't reinvent the wheel
@@ -1755,6 +1755,8 @@ Note:
 - Don't Repeat Yourself (DRY)
 
 Note:
+
+Simple solutions are generally a good thing
 
 - **YAGNI** — don't implement functionality until it is actually needed;
   speculative features add complexity and are often never used
@@ -1817,7 +1819,7 @@ Note:
   - But from experience, I would say that something like this makes a big difference
 - And this is just an example
   - Be as specific as you want: List anti-patterns, naming conventions, etc.
-- So I hope some of the principles today are worthy to end up in your instructions files
+- I hope some of the principles from this talk are worthy to end up in your instructions files
 
 ---
 
@@ -1827,6 +1829,6 @@ https://github.com/michasng/alchemy_of_code
 
 Note:
 
-- That's it.
-- I hope you found this talk interesting
+- That's all
 - You can find the slides right here
+- Thank you
