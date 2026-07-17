@@ -46,7 +46,7 @@ Note:
 
 ## Learning to Program
 
-note:
+Note:
 
 - I spent some time thinking about **how** we learn to program
 - Programming languages are **formal languages**, so we can use **linguistics** to understand them
@@ -60,7 +60,7 @@ note:
 
 `print("Hello World")`
 
-note:
+Note:
 
 - I first learned to program at the level of syntax
 - How we arrange words and phrases into coherent sentences
@@ -80,7 +80,7 @@ Boolean Logic\
 State\
 Scope
 
-note:
+Note:
 
 - Whether a sentence makes any sense
 - E.g. "Colorless green ideas sleep furiously." is syntactically correct, but makes no sense semantically
@@ -103,7 +103,7 @@ Paradigms\
 Principles\
 Patterns
 
-note:
+Note:
 
 - The same semantically correct sentence might have totally **different meanings**, depending on the **context**
 - E.g. When a student asks the teacher "Can I go to the bathroom?" and the teacher replies "I don't know. Can you?"
@@ -1005,7 +1005,7 @@ Note:
 - Interface Segregation Principle (ISP)
 - Dependency Inversion Principle (DIP)
 
-note:
+Note:
 
 - recap: These are the SOLID principles
 
@@ -1686,7 +1686,7 @@ Note:
 - Command-Query Separation (CQS)
 - Minimize Cyclomatic Complexity
 
-note:
+Note:
 
 - recap: These are my top-picks for what I call "Design Principles"
 
@@ -1782,7 +1782,7 @@ Follow these principles when writing or reviewing code:
 - **Composition**: Prefer "has a" over "is a" relationships
 - **Deep Modules**: Hide complexity behind simple interfaces
 - **YAGNI**: Only implement what is required
-- **Self documenting**: Use expressive naming to avoid comments
+- **Self-documenting**: Use expressive naming to avoid comments
 - **Avoid nesting**: Use early returns to flatten control flow
 ```
 
