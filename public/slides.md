@@ -94,6 +94,8 @@ Note:
 
 ---
 
+<!-- .slide: data-background-image="./paradigm.png" data-background-opacity="0.3" -->
+
 ## Paradigms
 
 Note:
@@ -526,6 +528,8 @@ Note:
 - So, just to recap, these are the four pillars.
 
 ---
+
+<!-- .slide: data-background-image="./solid.png" data-background-opacity="0.3" -->
 
 ## SOLID Principles
 
@@ -972,7 +976,7 @@ Note:
 
 --
 
-## SOLID Principles
+<!-- .slide: data-background-image="./solid.png" data-background-opacity="0.3" -->
 
 - Single Responsibility Principle (SRP)
 - Open/Closed Principle (OCP)
@@ -985,6 +989,8 @@ note:
 - recap: These are the SOLID principles
 
 ---
+
+<!-- .slide: data-background-image="./design.png" data-background-opacity="0.3" -->
 
 ## Design Principles
 
@@ -1607,7 +1613,7 @@ Note:
 
 --
 
-## Design Principles
+<!-- .slide: data-background-image="./design.png" data-background-opacity="0.3" -->
 
 - Inversion of Control (IoC)
 - Separation of Concerns (SoC)
@@ -1623,7 +1629,9 @@ note:
 
 ---
 
-## Honorary Mentions
+<!-- .slide: data-background-image="./honorable-mentions.png" data-background-opacity="0.3" -->
+
+## Honorable Mentions
 
 Note:
 
