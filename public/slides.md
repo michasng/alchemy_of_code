@@ -216,8 +216,8 @@ Note:
   - and it allows for fine-grained optimizations
 - Declarative has a higher level of abstraction
   - implementation details are hidden
-  - making it more readable and maintainable, because there is less to worry about
-- It's a trade-off, but in many use-cases, the benefits of declarative code outweigh the downsides
+  - there is less to worry about, so it tends to be more readable and maintainable
+- It's a trade-off, but in many cases, the benefits of declarative code outweigh the downsides
 
 --
 
@@ -321,22 +321,9 @@ Note:
 Note:
 
 - In OOP, people came up with features or "pillars" that a system should follow in order to call itself "object oriented"
-- This is less about **you** than it is about the **system**
+- I specifically don't call them **principles** of OOP
+- Because this is less about **you** than it is about the **system**
 - However, it's still important to understand how the system works in order for you to know how you should use it
-
---
-
-<!-- .slide: data-background-image="https://static.vecteezy.com/system/resources/previews/056/884/821/non_2x/3d-ancient-greek-temple-with-columns-on-transparent-background-free-png.png" data-background-opacity="0.1" -->
-
-Encapsulation\
-Abstraction\
-Inheritance\
-Polymorphism
-
-Note:
-
-In no particular order, these pillars are: ...
-I'm sure you've heard of these before, but what do they actually mean?
 
 --
 
@@ -383,6 +370,7 @@ Note:
 - Thinking back to "declarative" and "imperative" paradigms:
   - Abstraction separates **what** something does from **how** it is implemented
   - e.g. abstract classes or interfaces
+  - **what** the abstract method does is not defined by **how** it's implemented
 
 --
 
@@ -461,7 +449,7 @@ Note:
 - AKA "inclusion polymorphism" or "method overriding"
 - Using inheritance OR interfaces
 - A reference to a super-type can refer to any derived type
-- A subtype can provide a specific implementation for a method defined by its super-type
+- A subtype (`Dog`) can provide a specific implementation for a method defined by its super-type (`Animal`)
 - Control flow is determined at runtime (AKA dynamic / late binding)
 - Which method is called, depends on the type of the object itself (not on the parameter types)
 - Remember to apply the Liskov Substitution Principle (LSP)! (presented later)
@@ -519,15 +507,22 @@ Note:
   - AKA implicit type conversion or "weak" typing
   - Other example: Passing an int to a function expecting a float
 
+--
+
+<!-- .slide: data-background-image="https://static.vecteezy.com/system/resources/previews/056/884/821/non_2x/3d-ancient-greek-temple-with-columns-on-transparent-background-free-png.png" data-background-opacity="0.1" -->
+
+Encapsulation\
+Abstraction\
+Inheritance\
+Polymorphism
+
+Note:
+
+- So, just to recap, these are the four pillars.
+
 ---
 
 ## SOLID Principles
-
-- Single Responsibility Principle (SRP)
-- Open/Closed Principle (OCP)
-- Liskov Substitution Principle (LSP)
-- Interface Segregation Principle (ISP)
-- Dependency Inversion Principle (DIP)
 
 Note:
 
@@ -869,13 +864,15 @@ Note:
 
 ```typescript
 // low-level module
-class InMemoryRepository<T> {
-  save(data: T): void;
+class InMemoryUserRepository {
+  save(data: User): void;
 }
 
 // high-level module
 class UserService {
-  constructor(private storage: InMemoryRepository<User>) {}
+  constructor(private storage: InMemoryUserRepository) {}
+
+  // ...
 }
 ```
 
@@ -949,8 +946,8 @@ interface Repository<T> {
 }
 
 // low-level module
-class InMemoryRepository<T> implements Repository<T> {
-  save(data: T): void;
+class InMemoryUserRepository implements Repository<User> {
+  save(data: User): void;
 }
 
 // high-level module
@@ -968,17 +965,22 @@ Note:
     - It is one among many possible `Repository` implementations
 - These two classes are now decoupled
 
+--
+
+## SOLID Principles
+
+- Single Responsibility Principle (SRP)
+- Open/Closed Principle (OCP)
+- Liskov Substitution Principle (LSP)
+- Interface Segregation Principle (ISP)
+- Dependency Inversion Principle (DIP)
+
+note:
+- recap: These are the SOLID principles
+
 ---
 
 ## Design Principles
-
-- Inversion of Control (IoC)
-- Separation of Concerns (SoC)
-- Composition over Inheritance
-- Deep Modules
-- Law of Demeter (LoD)
-- Command-Query Separation (CQS)
-- Minimize Cyclomatic Complexity
 
 Note:
 
@@ -1597,6 +1599,21 @@ Note:
   - `estimateDeliveryDays` doesn't have to change
 - This also applies the Open/Closed Principle
 
+--
+
+## Design Principles
+
+- Inversion of Control (IoC)
+- Separation of Concerns (SoC)
+- Composition over Inheritance
+- Deep Modules
+- Law of Demeter (LoD)
+- Command-Query Separation (CQS)
+- Minimize Cyclomatic Complexity
+
+note:
+- recap: These are my top-picks for what I call "Design Principles"
+
 ---
 
 ## Honorary Mentions
@@ -1633,7 +1650,7 @@ Note:
 
 --
 
-## Be Lazy
+## Be "Lazy"
 
 - You Aren't Gonna Need It (YAGNI)
 - Don't reinvent the wheel
