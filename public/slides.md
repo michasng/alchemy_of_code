@@ -1372,7 +1372,7 @@ Note:
   - Match the interface to the typical use-case and hide the rest
   - Use composition to wrap low-level APIs
 
---
+<!-- --
 
 #### Violation of ?
 
@@ -1381,12 +1381,14 @@ Note:
 const city = order.getCustomer().getAddress().getCity();
 ```
 
-Note:
+-->
+<!-- Note:
 
 - The chain `order → customer → address → city` means the caller knows about three layers of internal structure
 - If `Address` ever changes (e.g. `getCity()` becomes `city`), every call-site breaks
 
---
+-->
+<!-- --
 
 ### Law of Demeter
 
@@ -1394,7 +1396,8 @@ Note:
 > about the internal details\
 > of the objects it manipulates.
 
-Note:
+-->
+<!-- Note:
 
 - Also called the **Principle of Least Knowledge**
 - Colloquially: "Don't talk to strangers"
@@ -1412,7 +1415,8 @@ Note:
   - Changes to internal structure don't cascade outward
   - Code is easier to test and reason about
 
---
+-->
+<!-- --
 
 #### Application
 
@@ -1423,10 +1427,13 @@ of the Law of Demeter
 const city = order.getCustomerCity();
 ```
 
-Note:
+-->
+<!-- Note:
 
 - By delegating through `order.getCustomerCity()`, callers are shielded from internal changes
 - Note: fluent/builder APIs and functional pipelines (e.g. `array.filter(...).map(...)`) are not violations — the Law of Demeter applies to accessing _foreign_ object internals, not to chaining operations on the _same_ object
+
+-->
 
 --
 
@@ -1682,7 +1689,7 @@ Note:
 - Separation of Concerns (SoC)
 - Composition over Inheritance
 - Deep Modules
-- Law of Demeter (LoD)
+<!-- - Law of Demeter (LoD) -->
 - Command-Query Separation (CQS)
 - Minimize Cyclomatic Complexity
 
@@ -1754,6 +1761,7 @@ Note:
 - Principle of Least Astonishment (POLA)
 - Self-documenting code
 - Avoid nesting
+- Law of Demeter
 - Boy Scout Rule: Leave the code cleaner
 
 Note:
@@ -1763,6 +1771,7 @@ Note:
 - **POLA** — code should behave in the way a reasonable developer would expect, no surprises or hidden side effects
 - **Self-documenting code** — choose expressive names and clear structure so the code explains itself without comments
 - **Avoid nesting** — deep nesting hurts readability; prefer early returns (guard clauses) to flatten control flow
+- **Law of Demeter** — A module should not know about the internal details of the objects it manipulates.
 - **Boy Scout Rule** — always leave the code a little cleaner than you found it, so quality improves incrementally over time
 
 ---
