@@ -490,18 +490,23 @@ Note:
 - Ad hoc polymorphism
   - A function can have multiple implementations with different signatures, specifically parameter types
   - AKA function or operator overloading
+  - Control flow is or at least can be determined at compile time
+  <!--
   - Control flow is typically determined at compile time (AKA static / early binding)
     - There are exceptions (interpreted languages, Julia, Common Lisp) where control flow is determined at runtime, based on the actual parameter types
+    -->
   - TypeScript is forced to implement this in a weird way, because here you can overload signatures, but all of them share a single implementation
     - Other languages like Java allow you to declare independent methods with the same name
 - Parametric polymorphism
   - Declarations using "generic" instead of "concrete" types
   - Abstract symbols that can substitute for any type
+  <!--
   - Generic programming (AKA "templates" in C++)
   - Typically checked at compile time
   - Different approaches, depending on the language
     - Monomorphization - compilation generates type-specific code (e.g. Rust, C++, C# at runtime for value types)
     - Type erasure - compilation discards type information or the runtime uses dynamic typing (e.g. Java using "Boxing" for value types, C# for reference types, TypeScript, Python)
+      -->
 - Coercion polymorphism
   - This happens when a language automatically converts a value from one type to another to match a function's (or operator's) requirements
   - AKA implicit type conversion or "weak" typing
@@ -976,6 +981,7 @@ Note:
 - Dependency Inversion Principle (DIP)
 
 note:
+
 - recap: These are the SOLID principles
 
 ---
@@ -1612,6 +1618,7 @@ Note:
 - Minimize Cyclomatic Complexity
 
 note:
+
 - recap: These are my top-picks for what I call "Design Principles"
 
 ---
