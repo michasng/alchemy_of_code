@@ -1434,6 +1434,7 @@ const city = order.getCustomerCity();
 - Note: fluent/builder APIs and functional pipelines (e.g. `array.filter(...).map(...)`) are not violations — the Law of Demeter applies to accessing _foreign_ object internals, not to chaining operations on the _same_ object
 
 -->
+
 --
 
 #### Violation of ?
@@ -1611,8 +1612,7 @@ interface OrderSummaryView {
 - CQRS adds significant complexity — only justified for high-scale or event-driven systems
 
 -->
-
---
+<!-- --
 
 #### Violation of ?
 
@@ -1625,14 +1625,16 @@ function estimateDeliveryDays(method: ShippingMethod): number {
 }
 ```
 
-Note:
+-->
+<!-- Note:
 
 - Three shipping methods, each as a separate `if` guard
 - The function has 3 decision points → cyclomatic complexity of 4
 - To fully test this, you need 4 test cases
 - Adding a new shipping method means adding another `if` branch to the function
 
---
+-->
+<!-- --
 
 ### Minimize Cyclomatic Complexity
 
@@ -1643,7 +1645,8 @@ Note:
 
 Decision points (JavaScript): `if, else if, ?, case, &&, ||, for, while, catch`
 
-Note:
+-->
+<!-- Note:
 
 - Introduced by Thomas McCabe in 1976
 - Cyclomatic complexity = number of decision points + 1
@@ -1659,7 +1662,8 @@ Note:
   - Fewer paths → fewer tests needed
   - Simpler functions are easier to read, debug and change
 
---
+-->
+<!-- --
 
 #### Application
 
@@ -1677,13 +1681,16 @@ function estimateDeliveryDays(method: ShippingMethod): number {
 }
 ```
 
-Note:
+-->
+<!-- Note:
 
 - `estimateDeliveryDays` now has a single straight path: complexity of 1
 - The data and the logic are separated
 - Adding a new shipping method means adding one entry to `DELIVERY_DAYS`
   - `estimateDeliveryDays` doesn't have to change
 - This also applies the Open/Closed Principle
+
+-->
 
 --
 
@@ -1695,7 +1702,7 @@ Note:
 - Deep Modules
 <!-- - Law of Demeter (LoD) -->
 - Command-Query Separation (CQS)
-- Minimize Cyclomatic Complexity
+<!-- - Minimize Cyclomatic Complexity -->
 
 Note:
 
@@ -1766,6 +1773,7 @@ Note:
 - Self-documenting code
 - Avoid nesting
 - Law of Demeter
+- Minimize Cyclomatic Complexity
 - Boy Scout Rule: Leave the code cleaner
 
 Note:
@@ -1775,7 +1783,8 @@ Note:
 - **POLA** — code should behave in the way a reasonable developer would expect, no surprises or hidden side effects
 - **Self-documenting code** — choose expressive names and clear structure so the code explains itself without comments
 - **Avoid nesting** — deep nesting hurts readability; prefer early returns (guard clauses) to flatten control flow
-- **Law of Demeter** — A module should not know about the internal details of the objects it manipulates.
+- **Law of Demeter** — a module should not know about the internal details of the objects it manipulates
+- **Minimize Cyclomatic Complexity** — avoid code with many branching paths
 - **Boy Scout Rule** — always leave the code a little cleaner than you found it, so quality improves incrementally over time
 
 ---
