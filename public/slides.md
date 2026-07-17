@@ -54,6 +54,8 @@ note:
 
 --
 
+<!-- .slide: data-background-image="./learning-to-program.png" data-background-opacity="0.2" -->
+
 ### Syntax (Grammar)
 
 `print("Hello World")`
@@ -68,6 +70,8 @@ note:
 - Compiler/Interpreter can verify syntax without/before executing the program
 
 --
+
+<!-- .slide: data-background-image="./learning-to-program.png" data-background-opacity="0.2" -->
 
 ### Semantics (Meaning)
 
@@ -89,6 +93,8 @@ note:
   - E.g. I can only create objects in Java, because the Syntax allows me to define a class
 
 --
+
+<!-- .slide: data-background-image="./learning-to-program.png" data-background-opacity="0.2" -->
 
 ### Pragmatics (Meaning in Context)
 
@@ -996,7 +1002,7 @@ Note:
 
 --
 
-<!-- .slide: data-background-image="./solid.png" data-background-opacity="0.3" -->
+<!-- .slide: data-background-image="./solid.png" data-background-opacity="0.2" -->
 
 - Single Responsibility Principle (SRP)
 - Open/Closed Principle (OCP)
@@ -1633,7 +1639,7 @@ Note:
 
 --
 
-<!-- .slide: data-background-image="./design.png" data-background-opacity="0.3" -->
+<!-- .slide: data-background-image="./design.png" data-background-opacity="0.2" -->
 
 - Inversion of Control (IoC)
 - Separation of Concerns (SoC)
