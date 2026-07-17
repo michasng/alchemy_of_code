@@ -1106,6 +1106,28 @@ Note:
 
 --
 
+### IoC and DIP
+
+|               | DIP                           | IoC                               |
+| ------------- | ----------------------------- | --------------------------------- |
+| **Question**  | What do you depend on?        | Who provides it?                  |
+| **Answer**    | Abstractions, not concretions | The caller, not the class         |
+| **Mechanism** | Interfaces                    | Constructor / parameter injection |
+
+Note:
+
+- DIP and IoC are complementary — you almost always apply them together
+- **DIP** (from SOLID) defines the _shape_ of the dependency: depend on an abstraction, not a concrete class
+- **IoC** defines _who controls_ the lifecycle: the dependency is provided from the outside, not constructed internally
+<!--
+- In practice: DIP gives you the interface, IoC gives you the wiring
+  - Without DIP, IoC just injects concretions — still coupled
+  - Without IoC, DIP can still be violated by calling `new ConcreteImpl()` inside the class
+    -->
+- Together they enable loose coupling, testability and swappable implementations
+
+--
+
 #### Violation of ?
 
 ```html
@@ -1182,6 +1204,27 @@ Note:
 - A designer can restyle the button without touching any JavaScript
 - A developer can change the behavior without opening the HTML
 - Each file has a single, well-defined concern
+
+--
+
+### SoC and SRP
+
+|              | SoC                             | SRP                                         |
+| ------------ | ------------------------------- | ------------------------------------------- |
+| **Paradigm** | Universal                       | OOP-specific                                |
+| **Scope**    | Any level of a system           | A specific module, class or method          |
+| **Question** | What does this section address? | What reason does this class have to change? |
+
+Note:
+
+- **SoC** (Dijkstra, 1974) is the general principle — it applies at every level
+  - Architecture: MVC layers, microservices, HTML/CSS/JS
+  - Modules: grouping files by concern
+  - Functions: one function, one job
+- **SRP** (from SOLID) is the OOP-specific application of SoC at the class level
+  - "One reason to change" is just SoC stated in terms of classes
+- SoC is the _why_, SRP is the _how_ inside an object-oriented codebase
+- If you find yourself asking "does this class do too much?", you are applying SoC — and SRP gives you the concrete rule to answer it
 
 --
 
