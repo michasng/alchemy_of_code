@@ -1774,6 +1774,38 @@ Note:
 
 ---
 
+## Guiding AI Agents
+
+```markdown
+Follow these principles when writing or reviewing code:
+
+- **SoC**: Separate structure, behavior, and persistence
+- **SRP**: Each class or function has one reason to change
+- **OCP**: Extend behavior without modifying existing code
+- **DIP**: Depend on abstractions, not concretions
+- **ISP**: Depend on minimal interfaces
+- **IoC**: Inject dependencies; never call `new` on services
+- **CQS**: Methods either change state or return data — not both
+- **Composition**: Prefer "has a" over "is a" relationships
+- **Deep Modules**: Hide complexity behind simple interfaces
+- **YAGNI**: Only implement what is required
+- **Self documenting**: Use expressive naming to avoid comments
+- **Avoid nesting**: Use early returns to flatten control flow
+```
+
+Note:
+
+- AI coding agents can be guided by a plain Markdown instructions file
+- The specific file path depends on your agent
+- Shift the default behavior toward the principles you care about
+- I don't have specific benchmarks for this
+  - But from experience, I would say that something like this makes a big difference
+- And this is just an example
+  - Be as specific as you want: List anti-patterns, naming conventions, etc.
+- So I hope some of the principles today are worthy to end up in your instructions files 
+
+---
+
 ## Slides
 
 https://github.com/michasng/alchemy_of_code
