@@ -22,23 +22,42 @@ Note:
 
 Note:
 
-- What **is** or **isn't** this talk about?
-- In one sentence, I want to explain the guiding principles to writing good software.
+- **What's this** talk about?
+- In one sentence: To explain the guiding principles to writing and reviewing good software.
 - I used to memorize **software design patterns**
   - Some can be **anti-patterns** (e.g. **Singletons** or **Service Locators**)
   - Now focus more on underlying **principles** and their **trade-offs**
   - Applied principles can lead to the accidental discovery of existing design patterns
   - Deeper understanding of **why** a solution is good or bad
-- And that's why we will _mostly_ talk about **software design principles**
+
+--
+
+### Then vs. Now
+
+Principles let you **write** good code.
+
+Now they let you **review** code you didn't write.
+
+Note:
+
+- I want to make the case, that this matters now more than ever
+  - We used to have a lot of time to think about the code before **we** wrote it
+  - Now we use **AI Agents** to generate hundreds of lines in seconds
+  - It looks plausible, it compiles, the tests might even pass
+  - But is it maintainable? Is it flexible?
+  - These are hard questions and as we all know, the answer is often "it depends"
+  - The following principles are your lens for judging it
+  - You can't review what you can't name — so let's name it
+- And that's why we will _mostly_ talk about software design **principles**
   - When to use them?
   - Trade-Offs?
-  - Realistic examples, where I encourage active participation
+  - Realistic examples, where I want to encourage active participation
 - Also about **programming paradigms** and the so called **pillars of OOP**
   - Often mentioned in our coding interviews
   - I see a lot of misunderstandings surrounding those
   - Fundamental to writing good software
-- My lists of paradigms and principles are not exhaustive
-  - A selection that I found most relevant for my everyday work
+- Firstly though, I want to do quick introduction
+  - On my view on learning to program
 
 ---
 
