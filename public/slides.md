@@ -247,6 +247,39 @@ Note:
 
 --
 
+### Common Paradigms
+
+<!-- prettier-ignore -->
+```typescript
+// procedural  (imperative): wrapping steps in a function
+function findShortNames(people: Person[]) { /* loop */ }
+
+// functional (declarative): inputs -> output, no mutable state
+const isShort = (name: string) => name.length < 6;
+const shortNames = people.map((p) => p.name).filter(isShort);
+
+// object-oriented  (mixed): bundles data with its behavior
+class Group { getShortNames(): string[] { /* ? */ } }
+```
+
+Note:
+
+- Same goal — the `shortNames` example — expressed three ways
+- **Procedural**: put the imperative loop inside a function
+  - Re-usable code that calls other re-usable code (a call stack)
+  - A `Person` here is a "record" — you don't need OOP to have an object
+- **Functional**: a declarative pipeline with no mutable state
+  - Functions are first-class citizens
+  - Pure functions are deterministic and side-effect-free
+  - Eliminates the possibility of some bugs and is arguably easier to debug
+- **Object-oriented**: data and behavior bundled together
+  - Exposed through members: fields (data) and methods (behavior)
+  - Classes themselves are declarative
+  - Method bodies can be whatever you want, imperative or declarative
+- Most modern languages are multi-paradigm — you mix these freely
+
+<!-- --
+
 <h2 class="fragment custom blur">Procedural (Imperative)</h2>
 
 ```typescript
@@ -261,7 +294,8 @@ function findShortNames(people: Person[]) {
 }
 ```
 
-Note:
+-->
+<!-- Note (procedural):
 
 - What paradigm would it be, if I put imperative code in a function?
   - It's procedural programming
@@ -269,17 +303,18 @@ Note:
 - Sometimes they're called "procedures", other times "functions" or "subroutines"
 - the essence is re-usable code that calls other re-usable code
   - at runtime, this is typically represented by a call stack
-  <!-- - an entire program could be represented by a call tree -->
+  - an entire program could be represented by a call tree
 - a person in this example is a "record"
   - that's a combound data type, made up of a fixed set of fields
   - that's the procedural term for an object
   - so you don't necessarily need OOP in order to have something like an object
 
---
+-->
+
+<!-- --
 
 ## Functional (Declarative)
 
-<!-- prettier-ignore -->
 ```typescript
 const isShort = (name: string) => name.length < 6;
 
@@ -288,7 +323,8 @@ const shortNames = people
   .filter(isShort);
 ```
 
-Note:
+-->
+<!-- Note (functional):
 
 - Functional programming is similar to procedural programming, but without the imperative elements
 - the program still forms a call tree
@@ -297,24 +333,24 @@ Note:
   - they can be assigned to variables, passed around as arguments and be returned by other functions
 - relies on pure functions (also called "purely functional programming")
   - deterministic (same thing in, same thing out)
-    <!-- - the same arguments always leads to the same return value -->
+    - the same arguments always leads to the same return value
   - no side-effects (just returns a value and does nothing else)
-    <!-- - the only thing it does is to determine the return value based on the arguments -->
-    <!-- - it doesn't modify non-local variables or perform I/O operations -->
-- functional programming eliminates the possibility of some **bugs**
-and having no state makes it arguably easier to **debug** and **test** and
-<!-- - roots in academia, comes from "lambda calculus", a system of computation based only on functions -->
+    - the only thing it does is to determine the return value based on the arguments
+    - it doesn't modify non-local variables or perform I/O operations
+- functional programming eliminates the possibility of some bugs
+  and having no state makes it arguably easier to debug and test
+- roots in academia, comes from "lambda calculus", a system of computation based only on functions
 - It's declarative in the sense that we don't explicitly state when and how the runtime iterates and when a condition executes.
 - Of course, the runtime still has to these things.
-<!--
 - So, in the case of JavaScript, these array functions are not lazily evaluated.
   - `map` returns another array
   - So from a performance standpoint, it's not ideal that we `filter` after the entire array is mapped.
   - Ideally, the API would evaluate lazily and then the order of our declarations would make less of a difference.
   - because that's the point of declarative programming: To not have to think about the concrete steps
-    -->
 
---
+-->
+
+<!-- --
 
 ## Object Oriented (Mixed)
 
@@ -330,7 +366,8 @@ class Group {
 }
 ```
 
-Note:
+-->
+<!-- Note (object-oriented):
 
 - Object orientation divides a program into objects
 - Objects expose data and behavior through defined interfaces
@@ -338,6 +375,8 @@ Note:
   - The data is also called "fields", "attributes" or "properties"
   - And the behavior or functions are now called "methods"
 - The difference to procedural programming is that data and behavior are no longer separate -> they are bundled in objects
+
+-->
 
 ---
 
