@@ -1440,11 +1440,18 @@ const city = order.getCustomerCity();
 #### Violation of ?
 
 ```typescript
+interface Cart {
+  itemPrices: number[];
+  promoCode?: string;
+}
+```
+
+```typescript
 class PricingService {
   private usedPromoCodes = new Set<string>();
 
-  calculatePrice(cart: Cart, promoCode?: string): number {
-    const total = Math.sumPrecise(cart.itemPrices);
+  calculatePrice({ itemPrices, promoCode }: Cart): number {
+    const total = Math.sumPrecise(itemPrices);
 
     if (promoCode && !this.usedPromoCodes.has(promoCode)) {
       this.usedPromoCodes.add(promoCode);
@@ -1460,7 +1467,7 @@ Note:
 
 - `calculatePrice()` started as a pure query — it just calculated a price
 - New requirement arrived:
-  - promo codes to get a discount
+  - Carts can have a promo code to get a discount
   - promo codes should only be usable once
 - The developer modified the existing query
 - Another obvious requirement:
@@ -1517,8 +1524,8 @@ of Command-Query Separation
 class PricingService {
   private usedPromoCodes = new Set<string>();
 
-  calculatePrice(cart: Cart, promoCode?: string): number {
-    const total = Math.sumPrecise(cart.itemPrices);
+  calculatePrice({ itemPrices, promoCode }: Cart): number {
+    const total = Math.sumPrecise(itemPrices);
     const hasDiscount = promoCode
       && !this.usedPromoCodes.has(promoCode);
     return hasDiscount ? total / 2 : total;
@@ -1534,6 +1541,7 @@ Note:
 
 - `calculatePrice()` is a pure query again, the UI can call it many times
 - `redeemPromoCode()` is an explicit command, called exactly once at checkout
+- And then both are called by some other service, to orchestrate a preview or a purchase
 - However, one could argue that these are different concerns in the first place
 
 --
@@ -1545,21 +1553,23 @@ of Command-Query Separation + Single Responsibility
 ```typescript
 class PromoCodeService {
   private usedPromoCodes = new Set<string>();
-
   isValid(promoCode: string): boolean {
     return !this.usedPromoCodes.has(promoCode);
   }
-
   redeem(promoCode: string): void {
     this.usedPromoCodes.add(promoCode);
   }
 }
 ```
 
+<!-- prettier-ignore -->
 ```typescript
 class PricingService {
-  calculatePrice(cart: Cart, discountRate: number = 0): number {
-    const total = Math.sumPrecise(cart.itemPrices);
+  calculatePrice(
+    itemPrices: number[],
+    discountRate: number = 0,
+  ): number {
+    const total = Math.sumPrecise(itemPrices);
     return total * (1 - discountRate);
   }
 }
@@ -1570,10 +1580,11 @@ Note:
 - So rather than adding features to the `PricingService`
 - Let's keep it focused on calculating the price
 - And have a new abstraction to manage promo codes
-- Different callers might compose these class in different ways
+- Different callers might compose these classes in different ways
   - The preview UI (query) checks promo code validity and calculates the price
   - The checkout (command) checks validity, calculates the price and redeems the promo code when the purchase succeeds;
     The checkout doesn't need to return a price, it only needs to indicate success
+- Note that neither of these classes knows about the Cart
 
 <!-- --
 
