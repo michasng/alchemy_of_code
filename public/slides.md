@@ -1760,6 +1760,48 @@ Note:
 
 ---
 
+<!-- .slide: data-background-image="./title.png" data-background-opacity="0.3" -->
+
+## 📰 Breaking News 📰
+
+🧪 Accidental Alchemy 🪙 \
+TNG turned spaghetti into gold
+
+Note:
+
+- Now here's a twist!
+- Throughout this talk, we only ever applied principles
+- We never once said "let's use pattern X here"
+- In fact, I never consciously tried to use patterns when I wrote the slides.
+- And yet gold has been created
+
+--
+
+| Principle   | Application       | Pattern                  |
+| ----------- | ----------------- | ------------------------ |
+| Composition | `CompositeEffect` | **Composite**            |
+| LSP         | `ReadOnlyStack`   | **Protection Proxy**     |
+| DIP         | `Repository<T>`   | **Repository**           |
+| IoC         | `OrderService`    | **Dependency Injection** |
+| OCP         | `Shape.area()`    | **Strategy**             |
+| SRP         | `Logger`          | **Facade**               |
+
+Note:
+
+- We stumbled upon lots of patterns
+- Each of these emerged by applying principles to the examples
+- We didn't memorize a catalog and reach for it
+- And that hopefully proves my thesis from the start:
+  - Patterns can be **discovered** through principles
+  - They don't need to be **memorized**
+  - When you understand **why**, you can derive **what to do** for free
+- As a bonus: Because you derived it, you understand the trade-offs
+  - You know when the pattern stops being worth it
+- So don't grind flashcards of 23 patterns
+  - Internalize a handful of principles and the patterns follow naturally
+
+---
+
 <!-- .slide: data-background-image="./honorable-mentions.png" data-background-opacity="0.3" -->
 
 ## Honorable Mentions
